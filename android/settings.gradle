@@ -1,2 +1,2 @@
-rootProject.name = 'tenjin_analytics'
+rootProject.name = 'tenjin_sdk'
 include ':tenjin'

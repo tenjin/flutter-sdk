@@ -121,7 +121,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.1"
-  tenjin_analytics:
+  tenjin_sdk:
     dependency: "direct main"
     description:
       path: ".."

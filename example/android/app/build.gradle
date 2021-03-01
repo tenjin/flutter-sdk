@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.tenjin_analytics_example"
+        applicationId "com.tenjin_sdk_example"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
@@ -60,6 +60,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+    implementation 'com.google.android.gms:play-services-Sdk:17.0.0'
     implementation 'com.android.installreferrer:installreferrer:1.1.2'
 }

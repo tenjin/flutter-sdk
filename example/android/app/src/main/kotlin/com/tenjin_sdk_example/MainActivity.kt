@@ -1,4 +1,4 @@
-package com.tenjin_analytics_example
+package com.tenjin_sdk_example
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tenjin_analytics.iml" filepath="$PROJECT_DIR$/.idea/modules/tenjin_analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tenjin_sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/tenjin_sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tenjin/tenjin_sdk.tenjin.iml" filepath="$PROJECT_DIR$/.idea/modules/tenjin/tenjin_sdk.tenjin.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,7 @@
+include: package:lint/analysis_options_package.yaml
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: false
+    avoid_setters_without_getters: false
+    avoid_positional_boolean_parameters: ignore

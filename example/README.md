@@ -1,6 +1,6 @@
-# tenjin_analytics_example
+# tenjin_sdk_example
 
-Demonstrates how to use the tenjin_analytics plugin.
+Demonstrates how to use the tenjin_sdk plugin.
 
 ## Getting Started
 
