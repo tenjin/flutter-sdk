@@ -42,10 +42,10 @@ class TenjinSDK {
       _channel.invokeMethod('optOutParams', {'params': params});
 
   void eventWithName(String name) =>
-      _channel.invokeMethod('sendCustomEvent', {'name': name});
+      _channel.invokeMethod('eventWithName', {'name': name});
 
   void eventWithNameAndValue(String name, int value) {
-    _channel.invokeMethod('sendCustomEventWithValue', {
+    _channel.invokeMethod('eventWithNameAndValue', {
       'name': name,
       'value': value,
     });

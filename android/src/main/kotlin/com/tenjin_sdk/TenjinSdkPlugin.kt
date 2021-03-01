@@ -8,13 +8,16 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.PluginRegistry.Registrar
+
 
 class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
   private lateinit var instance : TenjinSDK
-
-  constructor()
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tenjin_sdk")
@@ -78,7 +81,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       channel.invokeMethod("onSucessDeeplink", mapOf(
         "clickedTenjinLink" to clickedTenjinLink,
         "isFirstSession" to isFirstSession,
-        "data" to data,
+        "data" to data
       ));
     }
     result.success(null)
