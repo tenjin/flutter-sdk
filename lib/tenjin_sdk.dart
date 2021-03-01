@@ -78,22 +78,6 @@ class TenjinSDK {
         callback,
   ) =>
       _onSucessDeeplink = callback;
-
-  static final String FIRST_LAUNCH_KEY = "tenjinFirstLaunchKey";
-  static final String INSTALL_PREFERENCE = "tenjinInstallPreferences";
-  static final String REFERRAL_KEY = "tenjinInstallReferrer";
-  static final String REFERRAL_SENT_KEY = "tenjinInstallReferrerSent";
-  static final String CONTAINS_REFERRER = "containsReferrerKey";
-  static final String GOOGLE_INSTALL_REFERRAL_KEY =
-      "tenjinGoogleInstallReferrer";
-  static final String GOOGLE_INSTALL_REFERRAL_CLICK_TS =
-      "tenjinGoogleInstallReferrerClickTs";
-  static final String GOOGLE_INSTALL_REFERRAL_INSTALL_TS =
-      "tenjinGoogleInstallReferrerInstallTs";
-  static final String GOOGLE_INSTALL_REFERRAL_SENT_KEY =
-      "tenjinGoogleInstallReferrerSent";
-  static final String GOOGLE_INSTALL_CONTAINS_REFERRER =
-      "tenjinGoogleInstallContainsReferrerKey";
-  static final String TENJIN_REFERENCE_ID = "tenjinReferenceId";
+      
   static final String DEEPLINK_URL = "deferred_deeplink_url";
 }
