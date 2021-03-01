@@ -1,6 +1,6 @@
 # [Flutter Tenjin SDK](https://tenjin.com/)
 
-[![Pub Version](https://img.shields.io/pub/v/tenjin_Sdk?color=blue)](https://pub.dev/packages/tenjin_Sdk)
+[![Pub Version](https://img.shields.io/pub/v/tenjin_sdk?color=blue)](https://pub.dev/packages/tenjin_sdk)
 [![ISC License](https://img.shields.io/npm/l/vimdb?color=important)](LICENSE)
 
 A Flutter plugin to Tenjin SDK
