@@ -67,8 +67,10 @@ class _MyAppState extends State<MyApp> {
                     currencyCode: 'USD',
                     quantity: 1,
                     unitPrice: 3.80,
-                    iosReceipt: '0011101',
+                    iosReceipt: 'iosReceipt',
                     iosTransactionId: 'transactionId',
+                    androidDataSignature: 'androidDataSignature',
+                    androidPurchaseData: 'androidPurchaseData',
                   );
                 },
                 child: Text('transaction'),

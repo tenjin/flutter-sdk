@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,7 +11,7 @@ class TenjinSDK {
   Function(
           bool clickedTenjinLink, bool isFirstSession, Map<String, String> data)
       _onSucessDeeplink;
-  
+
   final MethodChannel _channel = const MethodChannel('tenjin_sdk');
 
   Future init({@required String apiKey}) async {
@@ -63,16 +65,25 @@ class TenjinSDK {
     String iosReceipt,
     String iosTransactionId,
   }) {
-    _channel.invokeMethod('transaction', {
-      'productId': productId,
-      'purchaseData': androidPurchaseData,
-      'dataSignature': androidDataSignature,
-      'currencyCode': currencyCode,
-      'unitPrice': unitPrice,
-      'quantity': quantity,
-      'receipt': iosReceipt,
-      'transactionId': iosTransactionId,
-    });
+    bool isValidIOS =
+        Platform.isIOS && iosReceipt != null && iosTransactionId != null;
+    bool isValidAndroiod = Platform.isAndroid &&
+        androidPurchaseData != null &&
+        androidDataSignature != null;
+    if (isValidIOS || isValidAndroiod) {
+      _channel.invokeMethod('transaction', {
+        'productId': productId,
+        'purchaseData': androidPurchaseData,
+        'dataSignature': androidDataSignature,
+        'currencyCode': currencyCode,
+        'unitPrice': unitPrice,
+        'quantity': quantity,
+        'receipt': iosReceipt,
+        'transactionId': iosTransactionId,
+      });
+    } else {
+      print('TenjinSDK.instancetransaction is missing data');
+    }
   }
 
   void appendAppSubversion(int value) =>
