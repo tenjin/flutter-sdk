@@ -1,6 +1,6 @@
 name: tenjin_sdk
 description: A Flutter plugin to Tenjin SDK.
-version: 0.0.1+3
+version: 0.0.1+7
 homepage: https://github.com/thize/flutter_tenjin_sdk
 
 environment:
@@ -22,5 +22,5 @@ flutter:
       android:
         package: com.tenjin_sdk
         pluginClass: TenjinSdkPlugin
-      # ios:
-      #   pluginClass: TenjinSdkPlugin
+      ios:
+        pluginClass: TenjinSdkPlugin

@@ -57,6 +57,9 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "appendAppSubversion" -> {
         appendAppSubversion(call, result)
       }
+      "requestTrackingAuthorization" -> {
+        result.success(true)
+      }
         else -> {
           result.notImplemented()
         }
@@ -76,7 +79,6 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   fun connect(call: MethodCall, result: Result){
     instance.connect()
-    TenjinSDK.DEEPLINK_URL
     instance.getDeeplink { clickedTenjinLink, isFirstSession, data ->
       channel.invokeMethod("onSucessDeeplink", mapOf(
         "clickedTenjinLink" to clickedTenjinLink,

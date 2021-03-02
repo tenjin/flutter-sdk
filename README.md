@@ -34,7 +34,6 @@ Manifest requirements:
 </manifest>
 ```
 
-
 If you haven’t already installed the [Google Play Services](https://developers.google.com/android/guides/setup), add it to our build.gradle file.
 Starting with Tenjin Android SDK v1.8.3, you will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html).
 ```dart
@@ -60,6 +59,13 @@ You can verify if the integration is working through our [Live Test Device Data 
 
 
 ## 👮🏾‍♂️ GDPR compliance
+
+Since iOS 14+ you are required to request a specific permission before you can have access to Apple's IDFA (a sort of proprietary cookie used by Apple to track users among multiple advertisers. To request this permission call the function TenjinSDK.instance.requestTrackingAuthorization():
+
+```dart
+<key>NSUserTrackingUsageDescription</key>
+<string></string>
+```
 
 As part of GDPR compliance, with Tenjin's SDK you can opt-in, opt-out devices/users, or select which specific device-related params to opt-in or opt-out.  `OptOut()` will not send any API requests to Tenjin and we will not process any events.
 

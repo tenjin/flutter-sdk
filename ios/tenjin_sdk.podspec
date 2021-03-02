@@ -5,19 +5,28 @@
 Pod::Spec.new do |s|
   s.name             = 'tenjin_sdk'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'A Flutter plugin to Tenjin SDK'
   s.description      = <<-DESC
-A new flutter plugin project.
+A Flutter plugin to Tenjin SDK
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://pub.dev/packages/tenjin_sdk'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Giovani Lobato' => 'thizeml@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '8.0'
+  s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  s.swift_version = '5.0'
+
+  s.swift_version = '5.1'
+  
+  s.static_framework = true
+  s.frameworks = "AdSupport", "AppTrackingTransparency", "iAd", "StoreKit"
+
+  s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+
+  s.dependency 'TenjinSDK', '1.12.4'
 end

@@ -9,12 +9,11 @@ class TenjinSDK {
   Function(
           bool clickedTenjinLink, bool isFirstSession, Map<String, String> data)
       _onSucessDeeplink;
-
+  
   final MethodChannel _channel = const MethodChannel('tenjin_sdk');
 
-  void init({@required String apiKey}) {
+  Future init({@required String apiKey}) async {
     _channel.invokeMethod('init', {'apiKey': apiKey});
-
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'onSucessDeeplink') {
         if (_onSucessDeeplink != null) {
@@ -51,21 +50,28 @@ class TenjinSDK {
     });
   }
 
+  Future<bool> requestTrackingAuthorization() async =>
+      await _channel.invokeMethod('requestTrackingAuthorization');
+
   void transaction({
     @required String productId,
-    @required String purchaseData,
-    @required String dataSignature,
     @required String currencyCode,
     @required double unitPrice,
     @required int quantity,
+    String androidPurchaseData,
+    String androidDataSignature,
+    String iosReceipt,
+    String iosTransactionId,
   }) {
     _channel.invokeMethod('transaction', {
       'productId': productId,
-      'purchaseData': purchaseData,
-      'dataSignature': dataSignature,
+      'purchaseData': androidPurchaseData,
+      'dataSignature': androidDataSignature,
       'currencyCode': currencyCode,
       'unitPrice': unitPrice,
       'quantity': quantity,
+      'receipt': iosReceipt,
+      'transactionId': iosTransactionId,
     });
   }
 
@@ -78,6 +84,6 @@ class TenjinSDK {
         callback,
   ) =>
       _onSucessDeeplink = callback;
-      
+
   static final String DEEPLINK_URL = "deferred_deeplink_url";
 }

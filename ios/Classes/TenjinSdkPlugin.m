@@ -1,4 +1,5 @@
 #import "TenjinSdkPlugin.h"
+#import "TenjinSDK.h"
 #if __has_include(<tenjin_sdk/tenjin_sdk-Swift.h>)
 #import <tenjin_sdk/tenjin_sdk-Swift.h>
 #else

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tenjin_sdk/tenjin_sdk.dart';
 
@@ -32,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Plugin example app')),
+        appBar: AppBar(title: const Text('Tenjin SDK')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,6 +52,26 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () =>
                     TenjinSDK.instance.eventWithNameAndValue('item', 100),
                 child: Text('eventWithNameAndValue'),
+              ),
+              if (Platform.isIOS)
+                FlatButton(
+                  onPressed: () {
+                    TenjinSDK.instance.requestTrackingAuthorization();
+                  },
+                  child: Text('Request Tracking Authorization'),
+                ),
+              FlatButton(
+                onPressed: () {
+                  TenjinSDK.instance.transaction(
+                    productId: 'productId',
+                    currencyCode: 'USD',
+                    quantity: 1,
+                    unitPrice: 3.80,
+                    iosReceipt: '0011101',
+                    iosTransactionId: 'transactionId',
+                  );
+                },
+                child: Text('transaction'),
               ),
             ],
           ),
