@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2021-03-03
+
+* Migrate to null safety.
+
 ## [0.0.2] - 2021-03-02
 
 * iOS Tenjin Sdk

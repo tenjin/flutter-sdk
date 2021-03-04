@@ -39,28 +39,28 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              FlatButton(
+              TextButton(
                 onPressed: () => TenjinSDK.instance.connect(),
                 child: Text('connect'),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () =>
                     TenjinSDK.instance.eventWithName('swipe_right'),
                 child: Text('eventWithName'),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () =>
                     TenjinSDK.instance.eventWithNameAndValue('item', 100),
                 child: Text('eventWithNameAndValue'),
               ),
               if (Platform.isIOS)
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     TenjinSDK.instance.requestTrackingAuthorization();
                   },
                   child: Text('Request Tracking Authorization'),
                 ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   TenjinSDK.instance.transaction(
                     productId: 'productId',

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TenjinSDK {
@@ -8,23 +7,20 @@ class TenjinSDK {
 
   static TenjinSDK instance = TenjinSDK._();
 
-  Function(
-          bool clickedTenjinLink, bool isFirstSession, Map<String, String> data)
-      _onSucessDeeplink;
+  Function(bool clickedTenjinLink, bool isFirstSession,
+      Map<String, String> data)? _onSucessDeeplink;
 
   final MethodChannel _channel = const MethodChannel('tenjin_sdk');
 
-  Future init({@required String apiKey}) async {
+  Future init({required String apiKey}) async {
     _channel.invokeMethod('init', {'apiKey': apiKey});
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'onSucessDeeplink') {
-        if (_onSucessDeeplink != null) {
-          _onSucessDeeplink(
-            call.arguments['clickedTenjinLink'] as bool,
-            call.arguments['isFirstSession'] as bool,
-            call.arguments['data'] as Map<String, String>,
-          );
-        }
+        _onSucessDeeplink?.call(
+          call.arguments['clickedTenjinLink'] as bool,
+          call.arguments['isFirstSession'] as bool,
+          call.arguments['data'] as Map<String, String>,
+        );
       }
       return Future.value();
     });
@@ -53,17 +49,18 @@ class TenjinSDK {
   }
 
   Future<bool> requestTrackingAuthorization() async =>
-      await _channel.invokeMethod('requestTrackingAuthorization');
+      await _channel.invokeMethod('requestTrackingAuthorization')
+          as Future<bool>;
 
   void transaction({
-    @required String productId,
-    @required String currencyCode,
-    @required double unitPrice,
-    @required int quantity,
-    String androidPurchaseData,
-    String androidDataSignature,
-    String iosReceipt,
-    String iosTransactionId,
+    required String productId,
+    required String currencyCode,
+    required double unitPrice,
+    required int quantity,
+    String? androidPurchaseData,
+    String? androidDataSignature,
+    String? iosReceipt,
+    String? iosTransactionId,
   }) {
     bool isValidIOS =
         Platform.isIOS && iosReceipt != null && iosTransactionId != null;
