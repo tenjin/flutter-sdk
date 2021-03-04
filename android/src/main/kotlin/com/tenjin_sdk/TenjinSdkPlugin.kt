@@ -102,15 +102,15 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   fun optInParams(call: MethodCall, result: Result){
     val args = call.arguments as Map<*, *>
-    val params = args["params"] as Array<String>
-    instance.optInParams(params)
+    val params = args["params"] as List<String>
+    instance.optInParams(params.toTypedArray())
     result.success(null)
   }
 
   fun optOutParams(call: MethodCall, result: Result){
     val args = call.arguments as Map<*, *>
-    val params = args["params"] as Array<String>
-    instance.optOutParams(params)
+    val params = args["params"] as List<String>
+    instance.optOutParams(params.toTypedArray())
     result.success(null)
   }
 
