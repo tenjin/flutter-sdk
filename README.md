@@ -38,7 +38,7 @@ If you haven’t already installed the [Google Play Services](https://developers
 Starting with Tenjin Android SDK v1.8.3, you will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html).
 ```dart
 dependencies {
-  implementation 'com.google.android.gms:play-services-Sdk:17.0.0'
+  implementation 'com.google.android.gms:play-services-analytics:17.0.0'
   implementation 'com.android.installreferrer:installreferrer:1.1.2'
 }
 ```
