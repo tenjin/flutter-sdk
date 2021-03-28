@@ -24,6 +24,8 @@ $ flutter pub get
 
 ### Android
 
+🔴🔴🔴🔴  To work in release you need to have Proguard configured. 🔴🔴🔴🔴
+
 Manifest requirements:
 ```xml
 <manifest>
