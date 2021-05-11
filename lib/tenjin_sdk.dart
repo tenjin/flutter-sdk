@@ -52,7 +52,7 @@ class TenjinSDK {
       await _channel.invokeMethod('requestTrackingAuthorization')
           as Future<bool>;
 
-  Future<void> registerAppForAdNetworkAttribution() =>
+  void registerAppForAdNetworkAttribution() =>
       _channel.invokeMethod('registerAppForAdNetworkAttribution');
 
   void updateConversionValue(int value) {
