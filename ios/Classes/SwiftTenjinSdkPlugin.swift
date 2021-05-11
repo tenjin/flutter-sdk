@@ -122,7 +122,7 @@ public class SwiftTenjinSdkPlugin: NSObject, FlutterPlugin {
 
     private func updateConversionValue(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         let args = call.arguments as! [String: Any]
-        let value = args["value"] as! NSNumber
+        let value = args["value"] as! Int32
         TenjinSDK.updateConversionValue(value)
         result(nil)
     }
