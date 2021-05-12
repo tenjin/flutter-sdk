@@ -60,6 +60,12 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "requestTrackingAuthorization" -> {
         result.success(true)
       }
+      "registerAppForAdNetworkAttribution" -> {
+        result.success(null)
+      }
+      "updateConversionValue" -> {
+        result.success(null)
+      }
         else -> {
           result.notImplemented()
         }

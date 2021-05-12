@@ -17,6 +17,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     TenjinSDK.instance.init(apiKey: '<API-KEY>');
     TenjinSDK.instance.optIn();
+    TenjinSDK.instance.registerAppForAdNetworkAttribution();
     TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
         bool isFirstSession, Map<String, String> data) {
       if (isFirstSession) {

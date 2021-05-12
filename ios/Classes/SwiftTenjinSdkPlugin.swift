@@ -22,6 +22,8 @@ public class SwiftTenjinSdkPlugin: NSObject, FlutterPlugin {
         case "eventWithNameAndValue": eventWithNameAndValue(call, result)
         case "appendAppSubversion": appendAppSubversion(call, result)
         case "requestTrackingAuthorization": requestTrackingAuthorization(call, result)
+        case "registerAppForAdNetworkAttribution": registerAppForAdNetworkAttribution(call, result)
+        case "updateConversionValue": updateConversionValue(call, result)
         default: result(FlutterMethodNotImplemented)
         }
     }
@@ -111,6 +113,18 @@ public class SwiftTenjinSdkPlugin: NSObject, FlutterPlugin {
         else {
           result(true)
         }
+    }
+
+    private func registerAppForAdNetworkAttribution(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        TenjinSDK.registerAppForAdNetworkAttribution()
+        result(nil)
+    }
+
+    private func updateConversionValue(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        let args = call.arguments as! [String: Any]
+        let value = args["value"] as! Int32
+        TenjinSDK.updateConversionValue(value)
+        result(nil)
     }
 }
 
