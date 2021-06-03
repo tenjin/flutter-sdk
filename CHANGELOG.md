@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2021-06-03
+
+* Add deeplink handler to ios
+
 ## [1.0.2] - 2021-05-17
 
 * Added SKAdNetwork and Conversion value (thanks The-Redhat)
