@@ -3,11 +3,17 @@ import UIKit
 import AppTrackingTransparency
 
 public class SwiftTenjinSdkPlugin: NSObject, FlutterPlugin {
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "tenjin_sdk", binaryMessenger: registrar.messenger())
-    let instance = SwiftTenjinSdkPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-  }
+    let channel: FlutterMethodChannel
+    
+    init(channel: FlutterMethodChannel) {
+        self.channel = channel
+    }
+    
+    public static func register(with registrar: FlutterPluginRegistrar) {
+        let channel = FlutterMethodChannel(name: "tenjin_sdk", binaryMessenger: registrar.messenger())
+        let instance = SwiftTenjinSdkPlugin(channel: channel)
+        registrar.addMethodCallDelegate(instance, channel: channel)
+    }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
@@ -60,12 +66,12 @@ public class SwiftTenjinSdkPlugin: NSObject, FlutterPlugin {
     }
 
     private func connect(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
-      TenjinSDK.connect()
-      // TenjinSDK.registerDeepLinkHandler({ s1: [AnyHashable : Any]?, s2: Error -> Bool in
-      //   result(nil)
-      //   return false
-      // })
-      result(nil)
+        TenjinSDK.connect()
+        TenjinSDK.sharedInstance().registerDeepLinkHandler({params, error in
+            let data: [String: Any?] = ["clickedTenjinLink": (params?["clicked_tenjin_link"] as? NSNumber)?.boolValue ?? false, "isFirstSession": (params?["is_first_session"] as? NSNumber)?.boolValue ?? false, "data": params?["deferred_deeplink_url"]]
+            self.channel.invokeMethod("onSucessDeeplink", arguments: data);
+        })
+        result(nil)
     }
 
     private func transaction(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
