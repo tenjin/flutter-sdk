@@ -8,7 +8,7 @@ class TenjinSDK {
   static TenjinSDK instance = TenjinSDK._();
 
   Function(bool clickedTenjinLink, bool isFirstSession,
-      Map<String, String> data)? _onSucessDeeplink;
+      String deferredDeeplinkUrl)? _onSucessDeeplink;
 
   final MethodChannel _channel = const MethodChannel('tenjin_sdk');
 
@@ -19,7 +19,7 @@ class TenjinSDK {
         _onSucessDeeplink?.call(
           call.arguments['clickedTenjinLink'] as bool,
           call.arguments['isFirstSession'] as bool,
-          call.arguments['data'] as Map<String, String>,
+          call.arguments['data'] as String,
         );
       }
       return Future.value();
@@ -97,7 +97,7 @@ class TenjinSDK {
 
   set setRewardCallback(
     Function(bool clickedTenjinLink, bool isFirstSession,
-            Map<String, String> data)
+            String deferredDeeplinkUrl)
         callback,
   ) =>
       _onSucessDeeplink = callback;
