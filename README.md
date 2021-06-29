@@ -187,7 +187,7 @@ Keep in mind that this event will not work if the value passed is not an integer
 
 ### Deep Links
 -------
-Tenjin supports the ability to direct users to a specific part of your app after a new attributed install via Tenjin's campaign tracking URLs. You can utilize the `getDeeplink` method and callback to access the deferred deeplink through the data object. To test you can follow the instructions found [here](http://help.tenjin.io/t/how-do-i-use-and-test-deferred-deeplinks-with-my-campaigns/547)
+Tenjin supports the ability to direct users to a specific part of your app after a new attributed install via Tenjin's campaign tracking URLs. You can utilize the `getDeeplink` method and callback to access the deferred deeplink through the data object. To test you can follow the instructions found [here](https://help.tenjin.io/t/how-do-i-use-and-test-deferred-deeplinks-with-my-campaigns/547)
 
 ```dart
 TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
