@@ -13,7 +13,7 @@ A Flutter plugin to Tenjin SDK
 
 ```yaml
 dependencies:
-  tenjin_Sdk: any
+  tenjin_plugin: any
 ```
 
 2. Install the plugin by running the command below in the terminal, in your project's root directory:

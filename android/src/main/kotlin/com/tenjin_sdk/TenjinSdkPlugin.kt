@@ -20,7 +20,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var instance : TenjinSDK
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tenjin_sdk")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tenjin_plugin")
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
   }
@@ -48,6 +48,9 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "transaction" -> {
         transaction(call, result)
       }
+      "transactionWithReceipt" -> {
+        transaction(call, result)
+      }
       "eventWithName" -> {
         eventWithName(call, result)
       }
@@ -63,12 +66,18 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "registerAppForAdNetworkAttribution" -> {
         result.success(null)
       }
-      "updateConversionValue" -> {
-        result.success(null)
+      "getAttributionInfo" -> {
+        getAttributionInfo(call, result)
       }
-        else -> {
-          result.notImplemented()
-        }
+      "setCustomerUserId" -> {
+        setCustomerUserId(call, result)
+      }
+      "getCustomerUserId" -> {
+        getCustomerUserId(call, result)
+      }
+      else -> {
+        result.notImplemented()
+      }
     }
   }
 
@@ -122,6 +131,16 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   fun transaction(call: MethodCall, result: Result) {
     val args = call.arguments as Map<*, *>
+    val productName = args["productName"] as String
+    val currencyCode = args["currencyCode"] as String
+    val quantity = args["quantity"] as Double
+    val unitPrice = args["unitPrice"] as Double
+    instance.transaction(productName, currencyCode, quantity.toInt(), unitPrice)
+    result.success(null)
+  }
+
+  fun transactionWithReceipt(call: MethodCall, result: Result) {
+    val args = call.arguments as Map<*, *>
     val productId = args["productId"] as String
     val purchaseData = args["purchaseData"] as String
     val dataSignature = args["dataSignature"] as String
@@ -152,5 +171,30 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val value = args["value"] as Integer
     instance.appendAppSubversion(value.toInt())
     result.success(null)
+  }
+
+  fun getAttributionInfo(call: MethodCall, result: Result) {
+    instance.getAttributionInfo {
+      result.success(it)
+    }
+  }
+
+  private fun setCustomerUserId(call: MethodCall, result: Result) {
+    val userId = call.argument<String>("userId")
+    if (userId != null) {
+      instance.setCustomerUserId(userId)
+      result.success(null)
+    } else {
+      result.error("Error", "Invalid or missing 'userId'", null)
+    }
+  }
+
+  private fun getCustomerUserId(call: MethodCall, result: Result) {
+    val userId = instance.getCustomerUserId()
+    if (userId != null) {
+      result.success(userId)
+    } else {
+      result.error("Error", "Failed to get 'userId'", null)
+    }
   }
 }

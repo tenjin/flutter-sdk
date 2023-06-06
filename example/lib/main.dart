@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:tenjin_sdk/tenjin_sdk.dart';
+import 'package:tenjin_plugin/tenjin_sdk.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,16 +18,6 @@ class _MyAppState extends State<MyApp> {
     TenjinSDK.instance.init(apiKey: '<API-KEY>');
     TenjinSDK.instance.optIn();
     TenjinSDK.instance.registerAppForAdNetworkAttribution();
-    TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
-        bool isFirstSession, Map<String, String> data) {
-      if (isFirstSession) {
-        if (clickedTenjinLink) {
-          if (data.containsKey(TenjinSDK.DEEPLINK_URL)) {
-            // use the deferred_deeplink_url to direct the user to a specific part of your app
-          }
-        }
-      }
-    };
     super.initState();
   }
 
@@ -63,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               TextButton(
                 onPressed: () {
-                  TenjinSDK.instance.transaction(
+                  TenjinSDK.instance.transactionWithReceipt(
                     productId: 'productId',
                     currencyCode: 'USD',
                     quantity: 1,
@@ -74,7 +64,55 @@ class _MyAppState extends State<MyApp> {
                     androidPurchaseData: 'androidPurchaseData',
                   );
                 },
-                child: Text('transaction'),
+                child: Text('Transaction with Receipt'),
+              ),
+              TextButton(
+                onPressed: () {
+                  TenjinSDK.instance.transaction('productId', 'USD', 1, 3.80);
+                },
+                child: Text('Transaction'),
+              ),
+              TextButton(
+                onPressed: () {
+                  TenjinSDK.instance.updatePostbackConversionValue(3);
+                },
+                child: Text('Update SKAN'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  try {
+                    Map<String, dynamic>? attributionInfo = await TenjinSDK.instance.getAttributionInfo();
+                    if (attributionInfo != null) {
+                      print(attributionInfo);
+                    } else {
+                      print('Failed to get attribution info');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
+                },
+                child: Text('Get attribution info'),
+              ),
+              TextButton(
+                onPressed: () {
+                  TenjinSDK.instance.setCustomerUserId('test_user_id');
+                },
+                child: Text('Set customer userId'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  try {
+                    String? userId = await TenjinSDK.instance.getCustomerUserId();
+                    if (userId != null) {
+                      print(userId);
+                    } else {
+                      print('Failed to get attribution info');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
+                },
+                child: Text('Get user id'),
               ),
             ],
           ),

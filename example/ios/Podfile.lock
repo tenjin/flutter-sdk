@@ -1,13 +1,13 @@
 PODS:
   - Flutter (1.0.0)
-  - tenjin_sdk (0.0.1):
+  - tenjin_plugin (1.0.0):
     - Flutter
-    - TenjinSDK
-  - TenjinSDK (1.12.4)
+    - TenjinSDK (= 1.12.24)
+  - TenjinSDK (1.12.24)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - tenjin_sdk (from `.symlinks/plugins/tenjin_sdk/ios`)
+  - tenjin_plugin (from `.symlinks/plugins/tenjin_plugin/ios`)
 
 SPEC REPOS:
   trunk:
@@ -16,14 +16,14 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  tenjin_sdk:
-    :path: ".symlinks/plugins/tenjin_sdk/ios"
+  tenjin_plugin:
+    :path: ".symlinks/plugins/tenjin_plugin/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  tenjin_sdk: 7b2df9ae0d99e8967005f81ac424b74122aaa914
-  TenjinSDK: 9a919cee8d4d78ab306ceabc1d8097ed2d55a524
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  tenjin_plugin: 0083bdea1b01a67d2c2c57a7654ee30194d6a3d1
+  TenjinSDK: 8e00cb351cb4246be6dd9184ed5e7771405404a8
 
-PODFILE CHECKSUM: 816416c4f4752183f6b27d86ad3ef52af5495b76
+PODFILE CHECKSUM: a4cf1e90a0bed550dc9c304e9edb299c19ca8c24
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3
