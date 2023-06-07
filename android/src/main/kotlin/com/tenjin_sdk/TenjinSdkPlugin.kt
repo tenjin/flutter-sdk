@@ -50,7 +50,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
         transaction(call, result)
       }
       "transactionWithReceipt" -> {
-        transaction(call, result)
+        transactionWithReceipt(call, result)
       }
       "eventWithName" -> {
         eventWithName(call, result)

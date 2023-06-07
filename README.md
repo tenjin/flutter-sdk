@@ -12,7 +12,7 @@ The Tenjin Flutter Plugin allows users to track events and installs in their iOS
 
 ```yaml
 dependencies:
-  tenjin_plugin: any
+  tenjin_plugin: '^1.0.0'
 ```
 
 2. Install the plugin by running the command below in the terminal, in your project's root directory:

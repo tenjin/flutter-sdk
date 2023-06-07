@@ -130,4 +130,24 @@ class TenjinSDK {
       return null;
     }
   }
+
+  void eventAdImpressionAdMob(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionAdMob', json);
+  }
+
+  void eventAdImpressionAppLovin(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionAppLovin', json);
+  }
+
+  void eventAdImpressionHyperBid(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionHyperBid', json);
+  }
+
+  void eventAdImpressionIronSource(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionIronSource', json);
+  }
+  
+  void eventAdImpressionTopOn(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionTopOn', json);
+  }
 }
