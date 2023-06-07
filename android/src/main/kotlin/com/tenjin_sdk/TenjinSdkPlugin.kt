@@ -2,6 +2,7 @@ package com.tenjin_sdk
 
 import android.content.Context
 import androidx.annotation.NonNull
+import org.json.JSONObject
 import com.tenjin.android.Callback
 import com.tenjin.android.TenjinSDK
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -74,6 +75,21 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "getCustomerUserId" -> {
         getCustomerUserId(call, result)
+      }
+      "eventAdImpressionAdMob" -> {
+        eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionAppLovin" -> {
+        eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionHyperBid" -> {
+        eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionIronSource" -> {
+        eventAdImpressionIronSource(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionTopOn" -> {
+        eventAdImpressionTopOn(call.arguments as HashMap<String, Any>)
       }
       else -> {
         result.notImplemented()
@@ -195,6 +211,46 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       result.success(userId)
     } else {
       result.error("Error", "Failed to get 'userId'", null)
+    }
+  }
+
+  private fun eventAdImpressionAdMob(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionAdMob((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionAppLovin(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionAppLovin((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionHyperBid(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionHyperBid((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionIronSource(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionIronSource((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionTopOn(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionTopOn((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
     }
   }
 }

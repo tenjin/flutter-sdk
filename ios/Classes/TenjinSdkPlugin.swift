@@ -30,6 +30,11 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "getAttributionInfo": getAttributionInfo(call, result)
         case "setCustomerUserId": setCustomerUserId(call, result)
         case "getCustomerUserId": getCustomerUserId(call, result)
+        case "eventAdImpressionAdMob": eventAdImpressionAdMob(call, result)
+        case "eventAdImpressionAppLovin": eventAdImpressionAppLovin(call, result)
+        case "eventAdImpressionHyperBid": eventAdImpressionHyperBid(call, result)
+        case "eventAdImpressionIronSource": eventAdImpressionIronSource(call, result)
+        case "eventAdImpressionTopOn": eventAdImpressionTopOn(call, result)
         default: result(FlutterMethodNotImplemented)
         }
     }
@@ -191,5 +196,83 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         } else {
             result(FlutterError(code: "Error", message: "Failed to get 'userId'", details: nil))
         }
+    }
+
+    private func eventAdImpressionAdMob(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.adMobImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+
+    private func eventAdImpressionAppLovin(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.appLovinImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+
+    private func eventAdImpressionHyperBid(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.hyperBidImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+
+    private func eventAdImpressionIronSource(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.ironSourceImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+
+    private func eventAdImpressionTopOn(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.topOnImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+    
+    private func convertToJsonString(from dictionary: [String: Any]) throws -> String {
+        let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            throw NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not convert JSON data to String"])
+        }
+        return jsonString
     }
 }
