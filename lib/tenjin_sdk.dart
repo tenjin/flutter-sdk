@@ -7,23 +7,10 @@ class TenjinSDK {
 
   static TenjinSDK instance = TenjinSDK._();
 
-  Function(bool clickedTenjinLink, bool isFirstSession,
-      String deferredDeeplinkUrl)? _onSucessDeeplink;
+  final MethodChannel _channel = const MethodChannel('tenjin_plugin');
 
-  final MethodChannel _channel = const MethodChannel('tenjin_sdk');
-
-  Future init({required String apiKey}) async {
+  void init({required String apiKey}) async {
     _channel.invokeMethod('init', {'apiKey': apiKey});
-    _channel.setMethodCallHandler((call) async {
-      if (call.method == 'onSucessDeeplink') {
-        _onSucessDeeplink?.call(
-          call.arguments['clickedTenjinLink'] as bool,
-          call.arguments['isFirstSession'] as bool,
-          call.arguments['data'] as String,
-        );
-      }
-      return Future.value();
-    });
   }
 
   void connect() => _channel.invokeMethod('connect');
@@ -50,18 +37,42 @@ class TenjinSDK {
 
   Future<bool> requestTrackingAuthorization() async =>
       await _channel.invokeMethod('requestTrackingAuthorization')
-          as Future<bool>;
+      as Future<bool>;
 
   void registerAppForAdNetworkAttribution() =>
       _channel.invokeMethod('registerAppForAdNetworkAttribution');
 
-  void updateConversionValue(int value) {
-    _channel.invokeMethod('updateConversionValue', {
-      'value': value,
+  void updatePostbackConversionValue(int conversionValue) {
+    _channel.invokeMethod('updatePostbackConversionValue', {
+      'conversionValue': conversionValue,
     });
   }
 
-  void transaction({
+  void updatePostbackConversionValueCoarseValue(int conversionValue, String coarseValue) {
+    _channel.invokeMethod('updatePostbackConversionValueCoarseValue', {
+      'conversionValue': conversionValue,
+      'coarseValue': coarseValue,
+    });
+  }
+
+  void updatePostbackConversionValueCoarseValueLockWindow(int conversionValue, String coarseValue, bool lockWindow) {
+    _channel.invokeMethod('updatePostbackConversionValueCoarseValue', {
+      'conversionValue': conversionValue,
+      'coarseValue': coarseValue,
+      'lockWindow': lockWindow,
+    });
+  }
+
+  void transaction(String productName, String currencyCode, double quantity, double unitPrice) {
+    _channel.invokeMethod('transaction', {
+      'productName': productName,
+      'currencyCode': currencyCode,
+      'quantity': quantity,
+      'unitPrice': unitPrice,
+    });
+  }
+
+  void transactionWithReceipt({
     required String productId,
     required String currencyCode,
     required double unitPrice,
@@ -77,7 +88,7 @@ class TenjinSDK {
         androidPurchaseData != null &&
         androidDataSignature != null;
     if (isValidIOS || isValidAndroiod) {
-      _channel.invokeMethod('transaction', {
+      _channel.invokeMethod('transactionWithReceipt', {
         'productId': productId,
         'purchaseData': androidPurchaseData,
         'dataSignature': androidDataSignature,
@@ -95,12 +106,48 @@ class TenjinSDK {
   void appendAppSubversion(int value) =>
       _channel.invokeMethod('appendAppSubversion', {'value': value});
 
-  set setRewardCallback(
-    Function(bool clickedTenjinLink, bool isFirstSession,
-            String deferredDeeplinkUrl)
-        callback,
-  ) =>
-      _onSucessDeeplink = callback;
+  Future<Map<String, dynamic>?> getAttributionInfo() async {
+    try {
+      final Map<String, dynamic>? attributionInfo =
+      await _channel.invokeMethod('getAttributionInfo');
+      return attributionInfo;
+    } on PlatformException catch (e) {
+      print("Failed to get attribution info: '${e.message}'.");
+      return null;
+    }
+  }
 
-  static final String DEEPLINK_URL = "deferred_deeplink_url";
+  void setCustomerUserId(String userId) {
+    _channel.invokeMethod('setCustomerUserId', {'userId': userId});
+  }
+
+  Future<String?> getCustomerUserId() async {
+    try {
+      final String? userId = await _channel.invokeMethod('getCustomerUserId');
+      return userId;
+    } on PlatformException catch (e) {
+      print("Failed to get user id: '${e.message}'.");
+      return null;
+    }
+  }
+
+  void eventAdImpressionAdMob(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionAdMob', json);
+  }
+
+  void eventAdImpressionAppLovin(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionAppLovin', json);
+  }
+
+  void eventAdImpressionHyperBid(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionHyperBid', json);
+  }
+
+  void eventAdImpressionIronSource(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionIronSource', json);
+  }
+  
+  void eventAdImpressionTopOn(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionTopOn', json);
+  }
 }

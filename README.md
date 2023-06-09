@@ -1,19 +1,18 @@
-# [Flutter Tenjin SDK](https://tenjin.com/)
+# Flutter Tenjin Plugin
 
-[![Pub Version](https://img.shields.io/pub/v/tenjin_sdk?color=blue)](https://pub.dev/packages/tenjin_sdk)
-[![ISC License](https://img.shields.io/npm/l/vimdb?color=important)](LICENSE)
+[![Pub Version](https://img.shields.io/pub/v/tenjin_sdk?color=blue)](https://pub.dev/packages/tenjin_plugin)
 
-A Flutter plugin to Tenjin SDK
+# Summary
 
-## ⚙️ Installation
+The Tenjin Flutter Plugin allows users to track events and installs in their iOS/Android apps. To learn more about Tenjin and our product offering, please visit https://www.tenjin.com.
 
-**[Tenjin Docs](https://docs.tenjin.com/en/)**
+## Plugin Integration
 
 1. Add the dependency to the `pubspec.yaml` file in your project:
 
 ```yaml
 dependencies:
-  tenjin_Sdk: any
+  tenjin_plugin: '^1.0.0'
 ```
 
 2. Install the plugin by running the command below in the terminal, in your project's root directory:
@@ -22,10 +21,30 @@ dependencies:
 $ flutter pub get
 ```
 
-### Android
+### Android ProGuard Settings:
+```java
+-keep class com.tenjin.** { *; }
+-keep public class com.google.android.gms.ads.identifier.** { *; }
+-keep public class com.google.android.gms.common.** { *; }
+-keep public class com.android.installreferrer.** { *; }
+-keep class * extends java.util.ListResourceBundle {
+    protected Object[][] getContents();
+}
+-keepattributes *Annotation*
+```
 
-🔴🔴🔴🔴  To work in release you need to have Proguard configured. 🔴🔴🔴🔴
-
+### Notes:
+On iOS:
+For AppTrackingTransparency, be sure to update your project `.plist` file and add `NSUserTrackingUsageDescription` along with the text message you want to display to users. This library is only available in iOS 14.0+. For further information on this, you can check our [iOS documentation](https://github.com/tenjin/tenjin-ios-sdk#-skadnetwork-and-ios-15-advertiser-postbacks)
+  
+On Android:
+You will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html) to your gradle dependencies. If you haven’t already installed the [Google Play Services](https://developers.google.com/android/guides/setup) you also need to add it
+```gradle
+dependencies {
+  classpath("com.android.installreferrer:installreferrer:1.1.2")
+  classpath("com.google.android.gms:play-services-analytics:17.0.0")
+}
+```
 Manifest requirements:
 ```xml
 <manifest>
@@ -36,16 +55,7 @@ Manifest requirements:
 </manifest>
 ```
 
-If you haven’t already installed the [Google Play Services](https://developers.google.com/android/guides/setup), add it to our build.gradle file.
-Starting with Tenjin Android SDK v1.8.3, you will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html).
-```dart
-dependencies {
-  implementation 'com.google.android.gms:play-services-analytics:17.0.0'
-  implementation 'com.android.installreferrer:installreferrer:1.1.2'
-}
-```
-
-## 📱 Usage
+## Usage
 
 ### Initialization
 
@@ -60,14 +70,7 @@ You can verify if the integration is working through our [Live Test Device Data 
 
 
 
-## 👮🏾‍♂️ GDPR compliance
-
-Since iOS 14+ you are required to request a specific permission before you can have access to Apple's IDFA (a sort of proprietary cookie used by Apple to track users among multiple advertisers. To request this permission call the function TenjinSDK.instance.requestTrackingAuthorization():
-
-```dart
-<key>NSUserTrackingUsageDescription</key>
-<string></string>
-```
+## GDPR compliance
 
 As part of GDPR compliance, with Tenjin's SDK you can opt-in, opt-out devices/users, or select which specific device-related params to opt-in or opt-out.  `OptOut()` will not send any API requests to Tenjin and we will not process any events.
 
@@ -135,7 +138,7 @@ TenjinSDK.instance.connect();
 | country | locale country |[Android](https://developer.android.com/reference/java/util/Locale.html#getDefault()) |
 | timezone | timezone | [Android](https://developer.android.com/reference/java/util/TimeZone.html) |
 
-### 💵 Purchase Event
+### Purchase Event
 
 To understand user revenue and purchase behavior, developers can send `transaction` events to Tenjin. There are two ways to send `transaction` events to Tenjin.
 
@@ -146,6 +149,10 @@ Tenjin can validate `transaction` receipts for you.
 
 Example:
 ```dart
+TenjinSDK.instance.transactionWithReceipt(
+  ...
+);
+
 TenjinSDK.instance.transaction(
   ...
 );
@@ -154,7 +161,7 @@ TenjinSDK.instance.transaction(
 You can verify if the IAP validation is working through our [Live Test Device Data Tool](https://www.tenjin.io/dashboard/sdk_diagnostics).  You should see a live event come in:
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
-## Custom Event
+### Custom Event
 
 NOTE: **DO NOT SEND CUSTOM EVENTS BEFORE THE INITIALIZATION** `connect()` event (above). The initialization event must come before any custom events are sent.
 
@@ -228,8 +235,7 @@ TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
     };
 ```
 
-App Subversion parameter for A/B Testing (requires DataVault)
--------
+### App Subversion parameter for A/B Testing (requires DataVault)
 
 If you are running A/B tests and want to report the differences, we can append a numeric value to your app version using the `appendAppSubversion` method.  For example, if your app version `1.0.1`, and set `appendAppSubversion: @8888`, it will report as `1.0.1.8888`.
 
@@ -241,23 +247,46 @@ TenjinSDK.instance.appendAppSubversion(8888);
 TenjinSDK.instance.connect();
 ```
 
-ProGuard Settings:
-----
-```java
--keep class com.tenjin.** { *; }
--keep public class com.google.android.gms.ads.identifier.** { *; }
--keep public class com.google.android.gms.common.** { *; }
--keep public class com.android.installreferrer.** { *; }
--keep class * extends java.util.ListResourceBundle {
-    protected Object[][] getContents();
-}
--keepattributes *Annotation*
+## Other methods available
+
+### Get attribution info
+```
+Map<String, dynamic>? attributionInfo = await TenjinSDK.instance.getAttributionInfo();  
 ```
 
-## 📝 License
+### Customer User ID
+```
+TenjinSDK.setCustomerUserId(userId)
+```
 
-**Tenjin** is released under the ISC License. See [LICENSE](LICENSE) for details.
+```
+TenjinSDK.getCustomerUserId()
+```
 
-## 👨🏾‍💻 Author
+### Send AdMob impression (ILRD)
+```
+TenjinSDK.eventAdImpressionAdMob(json)
+```
 
-Giovani Lobato ([GitHub](https://github.com/thize))
+### Send AppLovin impression (ILRD)
+```
+TenjinSDK.eventAdImpressionAppLovin(json)
+```
+
+### Send HyperBid impression (ILRD)
+```
+TenjinSDK.eventAdImpressionHyperBid(json)
+```
+
+### Send IronSource impression (ILRD)
+```
+TenjinSDK.eventAdImpressionIronSource(json)
+```
+
+### Send TopOn impression (ILRD)
+```
+TenjinSDK.eventAdImpressionTopOn(json)
+```
+
+## Support
+If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com

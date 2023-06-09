@@ -2,6 +2,7 @@ package com.tenjin_sdk
 
 import android.content.Context
 import androidx.annotation.NonNull
+import org.json.JSONObject
 import com.tenjin.android.Callback
 import com.tenjin.android.TenjinSDK
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -20,7 +21,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var instance : TenjinSDK
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tenjin_sdk")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tenjin_plugin")
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
   }
@@ -48,6 +49,9 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "transaction" -> {
         transaction(call, result)
       }
+      "transactionWithReceipt" -> {
+        transactionWithReceipt(call, result)
+      }
       "eventWithName" -> {
         eventWithName(call, result)
       }
@@ -63,12 +67,33 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       "registerAppForAdNetworkAttribution" -> {
         result.success(null)
       }
-      "updateConversionValue" -> {
-        result.success(null)
+      "getAttributionInfo" -> {
+        getAttributionInfo(call, result)
       }
-        else -> {
-          result.notImplemented()
-        }
+      "setCustomerUserId" -> {
+        setCustomerUserId(call, result)
+      }
+      "getCustomerUserId" -> {
+        getCustomerUserId(call, result)
+      }
+      "eventAdImpressionAdMob" -> {
+        eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionAppLovin" -> {
+        eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionHyperBid" -> {
+        eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionIronSource" -> {
+        eventAdImpressionIronSource(call.arguments as HashMap<String, Any>)
+      }
+      "eventAdImpressionTopOn" -> {
+        eventAdImpressionTopOn(call.arguments as HashMap<String, Any>)
+      }
+      else -> {
+        result.notImplemented()
+      }
     }
   }
 
@@ -122,6 +147,16 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   fun transaction(call: MethodCall, result: Result) {
     val args = call.arguments as Map<*, *>
+    val productName = args["productName"] as String
+    val currencyCode = args["currencyCode"] as String
+    val quantity = args["quantity"] as Double
+    val unitPrice = args["unitPrice"] as Double
+    instance.transaction(productName, currencyCode, quantity.toInt(), unitPrice)
+    result.success(null)
+  }
+
+  fun transactionWithReceipt(call: MethodCall, result: Result) {
+    val args = call.arguments as Map<*, *>
     val productId = args["productId"] as String
     val purchaseData = args["purchaseData"] as String
     val dataSignature = args["dataSignature"] as String
@@ -152,5 +187,70 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val value = args["value"] as Integer
     instance.appendAppSubversion(value.toInt())
     result.success(null)
+  }
+
+  fun getAttributionInfo(call: MethodCall, result: Result) {
+    instance.getAttributionInfo {
+      result.success(it)
+    }
+  }
+
+  private fun setCustomerUserId(call: MethodCall, result: Result) {
+    val userId = call.argument<String>("userId")
+    if (userId != null) {
+      instance.setCustomerUserId(userId)
+      result.success(null)
+    } else {
+      result.error("Error", "Invalid or missing 'userId'", null)
+    }
+  }
+
+  private fun getCustomerUserId(call: MethodCall, result: Result) {
+    val userId = instance.getCustomerUserId()
+    if (userId != null) {
+      result.success(userId)
+    } else {
+      result.error("Error", "Failed to get 'userId'", null)
+    }
+  }
+
+  private fun eventAdImpressionAdMob(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionAdMob((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionAppLovin(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionAppLovin((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionHyperBid(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionHyperBid((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionIronSource(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionIronSource((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun eventAdImpressionTopOn(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionTopOn((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 }

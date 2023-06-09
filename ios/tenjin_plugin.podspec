@@ -3,15 +3,15 @@
 # Run `pod lib lint tenjin_sdk.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'tenjin_sdk'
-  s.version          = '0.0.1'
-  s.summary          = 'A Flutter plugin to Tenjin SDK'
+  s.name             = 'tenjin_plugin'
+  s.version          = '1.0.0'
+  s.summary          = 'Tenjin Flutter SDK'
   s.description      = <<-DESC
 A Flutter plugin to Tenjin SDK
                        DESC
-  s.homepage         = 'https://pub.dev/packages/tenjin_sdk'
+  s.homepage         = 'https://pub.dev/packages/tenjin_plugin'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Giovani Lobato' => 'thizeml@gmail.com' }
+  s.author           = { 'Tenjin Engineering' => 'engineering@tenjin.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
@@ -28,5 +28,5 @@ A Flutter plugin to Tenjin SDK
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  s.dependency 'TenjinSDK', '1.12.4'
+  s.dependency 'TenjinSDK', '1.12.24'
 end
