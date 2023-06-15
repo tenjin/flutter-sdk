@@ -10,4 +10,4 @@
 
 - [ ] Reviewed
 - [ ] Deployed to Production
-- [ ] Add release information to https://adromance.atlassian.net/wiki/spaces/TJ/pages/2154397697/QA+for+SDK+version+update+-+Flutter
+- [ ] Add release information to https://adromance.atlassian.net/wiki/spaces/TJ/pages/2279833601/QA+for+SDK+version+update+-+Flutter
