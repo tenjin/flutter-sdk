@@ -35,9 +35,10 @@ class TenjinSDK {
     });
   }
 
-  Future<bool> requestTrackingAuthorization() async =>
-      await _channel.invokeMethod('requestTrackingAuthorization')
-      as Future<bool>;
+  Future<bool> requestTrackingAuthorization() async {
+      final result = await _channel.invokeMethod('requestTrackingAuthorization');
+      return Future.value(result as bool);
+  }
 
   void registerAppForAdNetworkAttribution() =>
       _channel.invokeMethod('registerAppForAdNetworkAttribution');
