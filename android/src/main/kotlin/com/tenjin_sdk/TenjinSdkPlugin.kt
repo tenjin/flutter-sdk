@@ -253,4 +253,12 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
       e.printStackTrace()
     }
   }
+
+  private fun eventAdImpressionTradPlus(json: HashMap<String, Any>) {
+    try {
+      instance.eventAdImpressionTradPlus((json as Map<*, *>?)?.let { JSONObject(it) })
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
 }

@@ -109,9 +109,15 @@ class TenjinSDK {
 
   Future<Map<String, dynamic>?> getAttributionInfo() async {
     try {
-      final Map<String, dynamic>? attributionInfo =
-      await _channel.invokeMethod('getAttributionInfo');
-      return attributionInfo;
+      final dynamic response = await _channel.invokeMethod('getAttributionInfo');
+      if (response is Map<String, dynamic>) {
+        return response;
+      } else if (response is Map) {
+      return Map<String, dynamic>.from(response);
+      } else {
+        print("Received invalid type for attribution info.");
+        return null;
+      }
     } on PlatformException catch (e) {
       print("Failed to get attribution info: '${e.message}'.");
       return null;
@@ -150,5 +156,40 @@ class TenjinSDK {
   
   void eventAdImpressionTopOn(Map<String, dynamic> json) {
     _channel.invokeMethod('eventAdImpressionTopOn', json);
+  }
+
+  void eventAdImpressionTradPlus(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionTradPlus', json);
+  }
+
+  void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
+    Map<String, dynamic> transformedJson = {};
+
+    String platform = Platform.isIOS ? 'iOS' : Platform.isAndroid ? 'Android';
+
+    if (platform == 'iOS') {
+      transformedJson['revenue'] = json['ecpm'];
+      transformedJson['ad_unit_id'] = json['adunit_id'];
+      transformedJson['network_name'] = json['adNetworkName'];
+      transformedJson['creative_id'] = json['creativeIdentifier'];
+      transformedJson['revenue_precision'] = json['ecpm_precision'];
+      transformedJson['format'] = json['placement_ad_type'];
+      transformedJson['country'] = json['country_code'];
+      transformedJson['ab_test'] = json['bucket_id'];
+      transformedJson['segment'] = json['segment_id'];
+      transformedJson['placement'] = json['adsource_placement_id'];
+    } else if (platform == 'Android') {
+      transformedJson['ad_unit_id'] = json['tpAdUnitId'];
+      transformedJson['network_name'] = json['adSourceName'];
+      transformedJson['revenue'] = json['ecpm'];
+      transformedJson['revenue_precision'] = json['ecpmPrecision'];
+      transformedJson['placement'] = json['adSourcePlacementId'];
+      transformedJson['ab_test'] = json['bucketId'];
+      transformedJson['segment'] = json['segmentId'];
+      transformedJson['country'] = json['isoCode'];
+      transformedJson['format'] = json['format'];
+    }
+    
+    _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
   }
 }

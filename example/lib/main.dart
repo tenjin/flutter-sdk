@@ -79,21 +79,6 @@ class _MyAppState extends State<MyApp> {
                 child: Text('Update SKAN'),
               ),
               TextButton(
-                onPressed: () async {
-                  try {
-                    Map<String, dynamic>? attributionInfo = await TenjinSDK.instance.getAttributionInfo();
-                    if (attributionInfo != null) {
-                      print(attributionInfo);
-                    } else {
-                      print('Failed to get attribution info');
-                    }
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                },
-                child: Text('Get attribution info'),
-              ),
-              TextButton(
                 onPressed: () {
                   TenjinSDK.instance.setCustomerUserId('test_user_id');
                 },
@@ -106,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                     if (userId != null) {
                       print(userId);
                     } else {
-                      print('Failed to get attribution info');
+                      print('Failed to get customer user id');
                     }
                   } catch (e) {
                     print('Error: $e');
