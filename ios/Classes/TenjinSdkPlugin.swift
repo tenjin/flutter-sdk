@@ -198,6 +198,15 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         }
     }
 
+    private func setCacheEventSetting(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let args = call.arguments as? [String: Any], let setting = args["setting"] as? Bool {
+            TenjinSDK.setCacheEventSetting(setting)
+            result(nil)
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'setting'", details: nil))
+        }
+    }
+
     private func eventAdImpressionAdMob(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let json = call.arguments as? [String: Any] {
             do {

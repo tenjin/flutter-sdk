@@ -128,6 +128,10 @@ class TenjinSDK {
     _channel.invokeMethod('setCustomerUserId', {'userId': userId});
   }
 
+  void setCacheEventSetting(bool setting) {
+    _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
+  }
+
   Future<String?> getCustomerUserId() async {
     try {
       final String? userId = await _channel.invokeMethod('getCustomerUserId');

@@ -214,6 +214,16 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     }
   }
 
+  private fun setCacheEventSetting(call: MethodCall, result: Result) {
+    val setting = call.argument<Boolean>("setting")
+    if (setting != null) {
+      instance.setCacheEventSetting(setting)
+      result.success(null)
+    } else {
+      result.error("Error", "Invalid or missing 'setting'", null)
+    }
+  }
+
   private fun eventAdImpressionAdMob(json: HashMap<String, Any>) {
     try {
       instance.eventAdImpressionAdMob((json as Map<*, *>?)?.let { JSONObject(it) })
