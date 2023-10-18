@@ -112,14 +112,13 @@ class TenjinSDK {
       final dynamic response = await _channel.invokeMethod('getAttributionInfo');
       if (response is Map<String, dynamic>) {
         return response;
-      } else if (response is Map) {
-      return Map<String, dynamic>.from(response);
-      } else {
-        print("Received invalid type for attribution info.");
-        return null;
       }
+      throw Exception("Received invalid type for attribution info.");
     } on PlatformException catch (e) {
       print("Failed to get attribution info: '${e.message}'.");
+      return null;
+    } catch (e) {
+      print("An error occurred: $e");
       return null;
     }
   }
@@ -168,10 +167,8 @@ class TenjinSDK {
 
   void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
     Map<String, dynamic> transformedJson = {};
-
-    String platform = Platform.isIOS ? 'iOS' : Platform.isAndroid ? 'Android';
-
-    if (platform == 'iOS') {
+    
+    if (Platform.isIOS) {
       transformedJson['revenue'] = json['ecpm'];
       transformedJson['ad_unit_id'] = json['adunit_id'];
       transformedJson['network_name'] = json['adNetworkName'];
@@ -182,7 +179,7 @@ class TenjinSDK {
       transformedJson['ab_test'] = json['bucket_id'];
       transformedJson['segment'] = json['segment_id'];
       transformedJson['placement'] = json['adsource_placement_id'];
-    } else if (platform == 'Android') {
+    } else if (Platform.isAndroid) {
       transformedJson['ad_unit_id'] = json['tpAdUnitId'];
       transformedJson['network_name'] = json['adSourceName'];
       transformedJson['revenue'] = json['ecpm'];
