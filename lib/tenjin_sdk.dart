@@ -109,17 +109,26 @@ class TenjinSDK {
 
   Future<Map<String, dynamic>?> getAttributionInfo() async {
     try {
-      final Map<String, dynamic>? attributionInfo =
-      await _channel.invokeMethod('getAttributionInfo');
-      return attributionInfo;
+      final dynamic response = await _channel.invokeMethod('getAttributionInfo');
+      if (response is Map<String, dynamic>) {
+        return response;
+      }
+      throw Exception("Received invalid type for attribution info.");
     } on PlatformException catch (e) {
       print("Failed to get attribution info: '${e.message}'.");
+      return null;
+    } catch (e) {
+      print("An error occurred: $e");
       return null;
     }
   }
 
   void setCustomerUserId(String userId) {
     _channel.invokeMethod('setCustomerUserId', {'userId': userId});
+  }
+
+  void setCacheEventSetting(bool setting) {
+    _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
   }
 
   Future<String?> getCustomerUserId() async {
@@ -150,5 +159,38 @@ class TenjinSDK {
   
   void eventAdImpressionTopOn(Map<String, dynamic> json) {
     _channel.invokeMethod('eventAdImpressionTopOn', json);
+  }
+
+  void eventAdImpressionTradPlus(Map<String, dynamic> json) {
+    _channel.invokeMethod('eventAdImpressionTradPlus', json);
+  }
+
+  void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
+    Map<String, dynamic> transformedJson = {};
+    
+    if (Platform.isIOS) {
+      transformedJson['revenue'] = json['ecpm'];
+      transformedJson['ad_unit_id'] = json['adunit_id'];
+      transformedJson['network_name'] = json['adNetworkName'];
+      transformedJson['creative_id'] = json['creativeIdentifier'];
+      transformedJson['revenue_precision'] = json['ecpm_precision'];
+      transformedJson['format'] = json['placement_ad_type'];
+      transformedJson['country'] = json['country_code'];
+      transformedJson['ab_test'] = json['bucket_id'];
+      transformedJson['segment'] = json['segment_id'];
+      transformedJson['placement'] = json['adsource_placement_id'];
+    } else if (Platform.isAndroid) {
+      transformedJson['ad_unit_id'] = json['tpAdUnitId'];
+      transformedJson['network_name'] = json['adSourceName'];
+      transformedJson['revenue'] = json['ecpm'];
+      transformedJson['revenue_precision'] = json['ecpmPrecision'];
+      transformedJson['placement'] = json['adSourcePlacementId'];
+      transformedJson['ab_test'] = json['bucketId'];
+      transformedJson['segment'] = json['segmentId'];
+      transformedJson['country'] = json['isoCode'];
+      transformedJson['format'] = json['format'];
+    }
+    
+    _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
   }
 }

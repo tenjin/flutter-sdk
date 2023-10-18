@@ -288,5 +288,11 @@ TenjinSDK.eventAdImpressionIronSource(json)
 TenjinSDK.eventAdImpressionTopOn(json)
 ```
 
+### Send TradPlus impression (ILRD)
+```
+TenjinSDK.eventAdImpressionTradPlus(json)
+TenjinSDK.eventAdImpressionTradPlusAdInfo(adInfo)
+```
+
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com

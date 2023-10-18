@@ -198,6 +198,15 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         }
     }
 
+    private func setCacheEventSetting(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let args = call.arguments as? [String: Any], let setting = args["setting"] as? Bool {
+            TenjinSDK.setCacheEventSetting(setting)
+            result(nil)
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'setting'", details: nil))
+        }
+    }
+
     private func eventAdImpressionAdMob(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let json = call.arguments as? [String: Any] {
             do {
@@ -259,6 +268,20 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
             do {
                 let jsonString = try convertToJsonString(from: json)
                 TenjinSDK.topOnImpression(fromJSON:jsonString)
+                result(nil)
+            } catch {
+                result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'json'", details: nil))
+        }
+    }
+
+    private func eventAdImpressionTradPlus(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let json = call.arguments as? [String: Any] {
+            do {
+                let jsonString = try convertToJsonString(from: json)
+                TenjinSDK.tradPlusImpression(fromJSON:jsonString)
                 result(nil)
             } catch {
                 result(FlutterError(code: "Error", message: error.localizedDescription, details: nil))

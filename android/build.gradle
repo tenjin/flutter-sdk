@@ -1,5 +1,5 @@
 group 'com.tenjin_sdk'
-version '1.0.0'
+version '1.1.0'
 
 buildscript {
     ext.kotlin_version = '1.7.0'
@@ -42,5 +42,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
     implementation 'com.android.installreferrer:installreferrer:1.1.2'
-    implementation 'com.tenjin:android-sdk:1.12.21'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
+    implementation 'com.tenjin:android-sdk:1.13.0'
 }
