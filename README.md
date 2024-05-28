@@ -113,6 +113,21 @@ TenjinSDK.instance.optOutParams(optOutParams);
 TenjinSDK.instance.connect();
 ```
 
+### SetGoogleDMAParameters
+If you already have a CMP integrated, Google DMA parameters will be automatically collected by the Tenjin SDK. There’s nothing to implement in the Tenjin SDK if you have a CMP integrated.
+If you want to override your CMP, or simply want to build your own consent mechanisms, you can use the following:
+
+```dart
+TenjinSDK.instance.setGoogleDMAParameters(adPersonalization, adUserData);
+```
+
+To explicitly manage the collection of Google DMA parameters, you have the flexibility to opt in or opt out at any time. While the default setting is to opt in, you can easily adjust your preferences using the OptInGoogleDMA or OptOutGoogleDMA methods, ensuring full control over your data privacy settings:
+
+```dart
+TenjinSDK.instance.optOutGoogleDMA();
+TenjinSDK.instance.optInGoogleDMA();
+```
+
 #### Device-Related Parameters
 
 | Param  | Description | Reference |
@@ -261,6 +276,13 @@ TenjinSDK.setCustomerUserId(userId)
 
 ```
 TenjinSDK.getCustomerUserId()
+```
+
+### GetAnalyticsInstallationId
+You can get the analytics id which is generated randomly and saved in the local storage of the device.
+
+```dart
+String? analyticsId = await TenjinSDK.instance.getAnalyticsInstallationId();
 ```
 
 ### Send AdMob impression (ILRD)

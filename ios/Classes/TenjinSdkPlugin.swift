@@ -16,6 +16,9 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "optOut": optOut(call, result)
         case "optInParams": optInParams(call, result)
         case "optOutParams": optOutParams(call, result)
+        case "optInOutUsingCMP": optInOutUsingCMP(call, result)
+        case "optOutGoogleDMA": optOutGoogleDMA(call, result)
+        case "optInGoogleDMA": optInGoogleDMA(call, result)
         case "connect": connect(call, result)
         case "transaction": transaction(call, result)
         case "transactionWithReceipt": transactionWithReceipt(call, result)
@@ -30,11 +33,15 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "getAttributionInfo": getAttributionInfo(call, result)
         case "setCustomerUserId": setCustomerUserId(call, result)
         case "getCustomerUserId": getCustomerUserId(call, result)
+        case "setCacheEventSetting": setCacheEventSetting(call, result)
+        case "getAnalyticsInstallationId": getAnalyticsInstallationId(call, result)
+        case "setGoogleDMAParameters": setGoogleDMAParameters(call, result)
         case "eventAdImpressionAdMob": eventAdImpressionAdMob(call, result)
         case "eventAdImpressionAppLovin": eventAdImpressionAppLovin(call, result)
         case "eventAdImpressionHyperBid": eventAdImpressionHyperBid(call, result)
         case "eventAdImpressionIronSource": eventAdImpressionIronSource(call, result)
         case "eventAdImpressionTopOn": eventAdImpressionTopOn(call, result)
+        case "eventAdImpressionTradPlus": eventAdImpressionTradPlus(call, result)
         default: result(FlutterMethodNotImplemented)
         }
     }
@@ -75,6 +82,21 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
             result(FlutterError(code: "Error", message: "Invalid or missing 'params'", details: nil))
         }
     }
+
+    private func optInOutUsingCMP(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        TenjinSDK.optInOutUsingCMP()
+        result(nil)
+    }
+
+    private func optOutGoogleDMA(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        TenjinSDK.optOutGoogleDMA()
+        result(nil)
+    }
+
+    private func optInGoogleDMA(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        TenjinSDK.optInGoogleDMA()
+        result(nil)
+    }
     
     private func connect(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         TenjinSDK.connect()
@@ -112,7 +134,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
     
     private func eventWithNameAndValue(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let name = args["name"] as? String, let value = args["value"] as? Int {
-            TenjinSDK.sendEvent(withName: name, andEventValue: String(value))
+            TenjinSDK.sendEvent(withName: name, andEventValue: value)
             result(nil)
         } else {
             result(FlutterError(code: "Error", message: "Invalid or missing 'name' or 'value'", details: nil))
@@ -204,6 +226,23 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
             result(nil)
         } else {
             result(FlutterError(code: "Error", message: "Invalid or missing 'setting'", details: nil))
+        }
+    }
+
+    private func getAnalyticsInstallationId(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let installationId = TenjinSDK.getAnalyticsInstallationId() {
+            result(installationId)
+        } else {
+            result(FlutterError(code: "Error", message: "Failed to get 'analyticsInstallationId'", details: nil))
+        }
+    }
+
+    private func setGoogleDMAParameters(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let args = call.arguments as? [String: Any], let adPersonalization = args["adPersonalization"] as? Bool, let adUserData = args["adUserData"] as? Bool {
+            TenjinSDK.setGoogleDMAParameters(withAdPersonalization: adPersonalization, adUserData: adUserData)
+            result(nil)
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing parameters", details: nil))
         }
     }
 

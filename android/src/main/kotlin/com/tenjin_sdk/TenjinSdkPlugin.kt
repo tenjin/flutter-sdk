@@ -27,74 +27,37 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    when (call.method) {
-      "init" -> {
-        init(call, result)
+      when (call.method) {
+          "init" -> init(call, result)
+          "optIn" -> optIn(call, result)
+          "optOut" -> optOut(call, result)
+          "optInParams" -> optInParams(call, result)
+          "optOutParams" -> optOutParams(call, result)
+          "optInOutUsingCMP" -> optInOutUsingCMP(call, result)
+          "optOutGoogleDMA" -> optOutGoogleDMA(call, result)
+          "optInGoogleDMA" -> optInGoogleDMA(call, result)
+          "connect" -> connect(call, result)
+          "transaction" -> transaction(call, result)
+          "transactionWithReceipt" -> transactionWithReceipt(call, result)
+          "eventWithName" -> eventWithName(call, result)
+          "eventWithNameAndValue" -> eventWithNameAndValue(call, result)
+          "appendAppSubversion" -> appendAppSubversion(call, result)
+          "requestTrackingAuthorization" -> result.success(true)
+          "registerAppForAdNetworkAttribution" -> result.success(null)
+          "getAttributionInfo" -> getAttributionInfo(call, result)
+          "setCustomerUserId" -> setCustomerUserId(call, result)
+          "getCustomerUserId" -> getCustomerUserId(call, result)
+          "setCacheEventSetting" -> setCacheEventSetting(call, result)
+          "getAnalyticsInstallationId" -> getAnalyticsInstallationId(call, result)
+          "setGoogleDMAParameters" -> setGoogleDMAParameters(call, result)
+          "eventAdImpressionAdMob" -> eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
+          "eventAdImpressionAppLovin" -> eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
+          "eventAdImpressionHyperBid" -> eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
+          "eventAdImpressionIronSource" -> eventAdImpressionIronSource(call.arguments as HashMap<String, Any>)
+          "eventAdImpressionTopOn" -> eventAdImpressionTopOn(call.arguments as HashMap<String, Any>)
+          "eventAdImpressionTradPlus" -> eventAdImpressionTradPlus(call.arguments as HashMap<String, Any>)
+          else -> result.notImplemented()
       }
-      "optIn" -> {
-        optIn(call, result)
-      }
-      "optOut" -> {
-        optOut(call, result)
-      }
-      "optInParams" -> {
-        optInParams(call, result)
-      }
-      "optOutParams" -> {
-        optOutParams(call, result)
-      }
-      "connect" -> {
-        connect(call, result)
-      }
-      "transaction" -> {
-        transaction(call, result)
-      }
-      "transactionWithReceipt" -> {
-        transactionWithReceipt(call, result)
-      }
-      "eventWithName" -> {
-        eventWithName(call, result)
-      }
-      "eventWithNameAndValue" -> {
-        eventWithNameAndValue(call, result)
-      }
-      "appendAppSubversion" -> {
-        appendAppSubversion(call, result)
-      }
-      "requestTrackingAuthorization" -> {
-        result.success(true)
-      }
-      "registerAppForAdNetworkAttribution" -> {
-        result.success(null)
-      }
-      "getAttributionInfo" -> {
-        getAttributionInfo(call, result)
-      }
-      "setCustomerUserId" -> {
-        setCustomerUserId(call, result)
-      }
-      "getCustomerUserId" -> {
-        getCustomerUserId(call, result)
-      }
-      "eventAdImpressionAdMob" -> {
-        eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
-      }
-      "eventAdImpressionAppLovin" -> {
-        eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
-      }
-      "eventAdImpressionHyperBid" -> {
-        eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
-      }
-      "eventAdImpressionIronSource" -> {
-        eventAdImpressionIronSource(call.arguments as HashMap<String, Any>)
-      }
-      "eventAdImpressionTopOn" -> {
-        eventAdImpressionTopOn(call.arguments as HashMap<String, Any>)
-      }
-      else -> {
-        result.notImplemented()
-      }
-    }
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -142,6 +105,21 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val args = call.arguments as Map<*, *>
     val params = args["params"] as List<String>
     instance.optOutParams(params.toTypedArray())
+    result.success(null)
+  }
+
+  fun optInOutUsingCMP(call: MethodCall, result: Result){
+    instance.optInOutUsingCMP()
+    result.success(null)
+  }
+  
+  fun optOutGoogleDMA(call: MethodCall, result: Result){
+    instance.optOutGoogleDMA()
+    result.success(null)
+  }
+
+  fun optInGoogleDMA(call: MethodCall, result: Result){
+    instance.optInGoogleDMA()
     result.success(null)
   }
 
@@ -222,6 +200,23 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     } else {
       result.error("Error", "Invalid or missing 'setting'", null)
     }
+  }
+
+  private fun getAnalyticsInstallationId(call: MethodCall, result: Result) {
+    val userId = instance.getAnalyticsInstallationId()
+    if (installationId != null) {
+      result.success(installationId)
+    } else {
+      result.error("Error", "Failed to get 'analyticsInstallationId'", null)
+    }
+  }
+
+  fun setGoogleDMAParameters(call: MethodCall, result: Result){
+    val args = call.arguments as Map<*, *>
+    val adPersonalization = args["adPersonalization"] as Bool
+    val adUserData = args["adUserData"] as Bool
+    instance.setGoogleDMAParameters(adPersonalization, adUserData)
+    result.success(null)
   }
 
   private fun eventAdImpressionAdMob(json: HashMap<String, Any>) {
