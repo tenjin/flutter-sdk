@@ -134,7 +134,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
     
     private func eventWithNameAndValue(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let name = args["name"] as? String, let value = args["value"] as? Int {
-            TenjinSDK.sendEvent(withName: name, andEventValue: value)
+            TenjinSDK.sendEvent(withName: name, andValue: value)
             result(nil)
         } else {
             result(FlutterError(code: "Error", message: "Invalid or missing 'name' or 'value'", details: nil))
@@ -239,7 +239,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
 
     private func setGoogleDMAParameters(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let adPersonalization = args["adPersonalization"] as? Bool, let adUserData = args["adUserData"] as? Bool {
-            TenjinSDK.setGoogleDMAParameters(withAdPersonalization: adPersonalization, adUserData: adUserData)
+            TenjinSDK.sharedInstance().setGoogleDMAParametersWithAdPersonalization(adPersonalization, adUserData: adUserData)
             result(nil)
         } else {
             result(FlutterError(code: "Error", message: "Invalid or missing parameters", details: nil))

@@ -2,7 +2,7 @@ group 'com.tenjin_sdk'
 version '1.2.0'
 
 buildscript {
-    ext.kotlin_version = '1.7.2'
+    ext.kotlin_version = '1.7.0'
     repositories {
         google()
         mavenCentral()

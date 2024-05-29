@@ -49,7 +49,6 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "getCustomerUserId" -> getCustomerUserId(call, result)
           "setCacheEventSetting" -> setCacheEventSetting(call, result)
           "getAnalyticsInstallationId" -> getAnalyticsInstallationId(call, result)
-          "setGoogleDMAParameters" -> setGoogleDMAParameters(call, result)
           "eventAdImpressionAdMob" -> eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
           "eventAdImpressionAppLovin" -> eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
           "eventAdImpressionHyperBid" -> eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
@@ -203,20 +202,12 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun getAnalyticsInstallationId(call: MethodCall, result: Result) {
-    val userId = instance.getAnalyticsInstallationId()
+    val installationId = instance.getAnalyticsInstallationId()
     if (installationId != null) {
       result.success(installationId)
     } else {
       result.error("Error", "Failed to get 'analyticsInstallationId'", null)
     }
-  }
-
-  fun setGoogleDMAParameters(call: MethodCall, result: Result){
-    val args = call.arguments as Map<*, *>
-    val adPersonalization = args["adPersonalization"] as Bool
-    val adUserData = args["adUserData"] as Bool
-    instance.setGoogleDMAParameters(adPersonalization, adUserData)
-    result.success(null)
   }
 
   private fun eventAdImpressionAdMob(json: HashMap<String, Any>) {
