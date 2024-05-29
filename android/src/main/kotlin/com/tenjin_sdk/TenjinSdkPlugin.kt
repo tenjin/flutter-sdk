@@ -49,6 +49,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "getCustomerUserId" -> getCustomerUserId(call, result)
           "setCacheEventSetting" -> setCacheEventSetting(call, result)
           "getAnalyticsInstallationId" -> getAnalyticsInstallationId(call, result)
+        "setGoogleDMAParameters" -> setGoogleDMAParameters(call, result)
           "eventAdImpressionAdMob" -> eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
           "eventAdImpressionAppLovin" -> eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
           "eventAdImpressionHyperBid" -> eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
@@ -119,6 +120,14 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   fun optInGoogleDMA(call: MethodCall, result: Result){
     instance.optInGoogleDMA()
+    result.success(null)
+  }
+
+  fun setGoogleDMAParameters(call: MethodCall, result: Result){
+    val args = call.arguments as Map<*, *>
+    val adPersonalization = args["adPersonalization"] as Boolean
+    val adUserData = args["adUserData"] as Boolean
+    instance.setGoogleDMAParameters(adPersonalization, adUserData)
     result.success(null)
   }
 
