@@ -1,6 +1,6 @@
 //
 // Created by Tenjin on 2016-05-20.
-//  Version 1.12.28
+//  Version 1.14.3
 
 //  Copyright (c) 2016 Tenjin. All rights reserved.
 //
@@ -91,9 +91,13 @@ andDeferredDeeplink:(NSURL *)url
 //use sendEventWithName for custom event names
 + (void)sendEventWithName:(NSString *)eventName;
 
-//This method checks to make sure integers are passed as values.
+//This method is deprecated in favor of [sendEventWithName: andValue:], so you can pass an integer directly
 + (void)sendEventWithName:(NSString *)eventName
-            andEventValue:(NSString *)eventValue;
+            andEventValue:(NSString *)eventValue __deprecated_msg("use `sendEventWithName: andValue:` instead");
+
+//Use this method to send custom events with values
++ (void)sendEventWithName:(NSString *)eventName
+            andValue:(NSInteger)eventValue;
 
 //This method is deprecated in favor of [transaction: andReceipt:], so Tenjin can verify your transactions
 + (void)transaction:(SKPaymentTransaction *)transaction __attribute__((deprecated));
@@ -142,6 +146,15 @@ andDeferredDeeplink:(NSURL *)url
 // GDPR opt-in with list of params
 + (void)optInParams:(NSArray *)params;
 
+// GDPR opt-in/opt-out through CMP consents
++ (bool)optInOutUsingCMP;
+
+// Opt out from Google DMA parameters (opted in by default)
++ (void)optOutGoogleDMA;
+
+// Opt out from Google DMA parameters
++ (void)optInGoogleDMA;
+
 // Appends app subversion to app version
 + (void)appendAppSubversion:(NSNumber *)subversion;
 
@@ -172,6 +185,9 @@ andDeferredDeeplink:(NSURL *)url
 // Set the setting to enable/disable cache events and retrying, it's false by default
 + (void)setCacheEventSetting:(BOOL)isCacheEventsEnabled;
 
+// Get cached analytics_installation_id
++ (NSString*)getAnalyticsInstallationId;
+
 #pragma mark Util
 
 + (void)verboseLogs;
@@ -193,6 +209,8 @@ andDeferredDeeplink:(NSURL *)url
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void (^)(NSUInteger status))completion;
 
 - (void)getAttributionInfo:(void (^)(NSDictionary *attributionInfo, NSError *error))completionHandler;
+
+- (void)setGoogleDMAParametersWithAdPersonalization:(BOOL)adPersonalization adUserData:(BOOL)adUserData;
 
 @end
 
