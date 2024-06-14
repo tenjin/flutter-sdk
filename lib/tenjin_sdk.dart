@@ -25,6 +25,12 @@ class TenjinSDK {
   void optOutParams(List<String> params) =>
       _channel.invokeMethod('optOutParams', {'params': params});
 
+  void optInOutUsingCMP() => _channel.invokeMethod('optInOutUsingCMP');
+
+  void optOutGoogleDMA() => _channel.invokeMethod('optOutGoogleDMA');
+
+  void optInGoogleDMA() => _channel.invokeMethod('optInGoogleDMA');
+
   void eventWithName(String name) =>
       _channel.invokeMethod('eventWithName', {'name': name});
 
@@ -36,8 +42,8 @@ class TenjinSDK {
   }
 
   Future<bool> requestTrackingAuthorization() async {
-      final result = await _channel.invokeMethod('requestTrackingAuthorization');
-      return Future.value(result as bool);
+    final result = await _channel.invokeMethod('requestTrackingAuthorization');
+    return Future.value(result as bool);
   }
 
   void registerAppForAdNetworkAttribution() =>
@@ -57,7 +63,7 @@ class TenjinSDK {
   }
 
   void updatePostbackConversionValueCoarseValueLockWindow(int conversionValue, String coarseValue, bool lockWindow) {
-    _channel.invokeMethod('updatePostbackConversionValueCoarseValue', {
+    _channel.invokeMethod('updatePostbackConversionValueCoarseValueLockWindow', {
       'conversionValue': conversionValue,
       'coarseValue': coarseValue,
       'lockWindow': lockWindow,
@@ -85,10 +91,10 @@ class TenjinSDK {
   }) {
     bool isValidIOS =
         Platform.isIOS && iosReceipt != null && iosTransactionId != null;
-    bool isValidAndroiod = Platform.isAndroid &&
+    bool isValidAndroid = Platform.isAndroid &&
         androidPurchaseData != null &&
         androidDataSignature != null;
-    if (isValidIOS || isValidAndroiod) {
+    if (isValidIOS || isValidAndroid) {
       _channel.invokeMethod('transactionWithReceipt', {
         'productId': productId,
         'purchaseData': androidPurchaseData,
@@ -100,7 +106,7 @@ class TenjinSDK {
         'transactionId': iosTransactionId,
       });
     } else {
-      print('TenjinSDK.instancetransaction is missing data');
+      print('TenjinSDK.instance transaction is missing data');
     }
   }
 
@@ -127,10 +133,6 @@ class TenjinSDK {
     _channel.invokeMethod('setCustomerUserId', {'userId': userId});
   }
 
-  void setCacheEventSetting(bool setting) {
-    _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
-  }
-
   Future<String?> getCustomerUserId() async {
     try {
       final String? userId = await _channel.invokeMethod('getCustomerUserId');
@@ -139,6 +141,27 @@ class TenjinSDK {
       print("Failed to get user id: '${e.message}'.");
       return null;
     }
+  }
+
+  void setCacheEventSetting(bool setting) {
+    _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
+  }
+
+  Future<String?> getAnalyticsInstallationId() async {
+    try {
+      final String? installationId = await _channel.invokeMethod('getAnalyticsInstallationId');
+      return installationId;
+    } on PlatformException catch (e) {
+      print("Failed to get analytics installation id: '${e.message}'.");
+      return null;
+    }
+  }
+
+  void setGoogleDMAParameters(bool adPersonalization, bool adUserData) {
+    _channel.invokeMethod('setGoogleDMAParameters', {
+      'adPersonalization': adPersonalization,
+      'adUserData': adUserData,
+    });
   }
 
   void eventAdImpressionAdMob(Map<String, dynamic> json) {
