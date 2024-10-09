@@ -116,8 +116,11 @@ class TenjinSDK {
   Future<Map<String, dynamic>?> getAttributionInfo() async {
     try {
       final dynamic response = await _channel.invokeMethod('getAttributionInfo');
-      if (response is Map<String, dynamic>) {
-        return response;
+      if (response is Map) {
+        final Map<String, dynamic> stringKeyedMap = response.map((key, value) {
+          return MapEntry(key.toString(), value);
+        });
+        return stringKeyedMap;
       }
       throw Exception("Received invalid type for attribution info.");
     } on PlatformException catch (e) {
