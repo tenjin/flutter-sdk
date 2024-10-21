@@ -176,8 +176,16 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   fun getAttributionInfo(call: MethodCall, result: Result) {
-    instance.getAttributionInfo {
-      result.success(it)
+    var hasResponded = false
+    instance.getAttributionInfo { attributionInfo ->
+      if (!hasResponded) {
+        hasResponded = true
+        if (attributionInfo != null) {
+          result.success(attributionInfo)
+        } else {
+          result.error("Error", "Attribution info is null", null)
+        }
+      }
     }
   }
 
