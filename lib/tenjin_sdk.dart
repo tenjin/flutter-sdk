@@ -9,33 +9,33 @@ class TenjinSDK {
 
   final MethodChannel _channel = const MethodChannel('tenjin_plugin');
 
-  void init({required String apiKey}) async {
-    _channel.invokeMethod('init', {'apiKey': apiKey});
+  Future<void> init({required String apiKey}) async {
+    await _channel.invokeMethod('init', {'apiKey': apiKey});
   }
 
-  void connect() => _channel.invokeMethod('connect');
+  Future<void> connect() => _channel.invokeMethod('connect');
 
-  void optIn() => _channel.invokeMethod('optIn');
+  Future<void> optIn() => _channel.invokeMethod('optIn');
 
-  void optOut() => _channel.invokeMethod('optOut');
+  Future<void> optOut() => _channel.invokeMethod('optOut');
 
-  void optInParams(List<String> params) =>
+  Future<void> optInParams(List<String> params) =>
       _channel.invokeMethod('optInParams', {'params': params});
 
-  void optOutParams(List<String> params) =>
+  Future<void> optOutParams(List<String> params) =>
       _channel.invokeMethod('optOutParams', {'params': params});
 
-  void optInOutUsingCMP() => _channel.invokeMethod('optInOutUsingCMP');
+  Future<void> optInOutUsingCMP() => _channel.invokeMethod('optInOutUsingCMP');
 
-  void optOutGoogleDMA() => _channel.invokeMethod('optOutGoogleDMA');
+  Future<void> optOutGoogleDMA() => _channel.invokeMethod('optOutGoogleDMA');
 
-  void optInGoogleDMA() => _channel.invokeMethod('optInGoogleDMA');
+  Future<void> optInGoogleDMA() => _channel.invokeMethod('optInGoogleDMA');
 
-  void eventWithName(String name) =>
+  Future<void> eventWithName(String name) =>
       _channel.invokeMethod('eventWithName', {'name': name});
 
-  void eventWithNameAndValue(String name, int value) {
-    _channel.invokeMethod('eventWithNameAndValue', {
+  Future<void> eventWithNameAndValue(String name, int value) async {
+    await _channel.invokeMethod('eventWithNameAndValue', {
       'name': name,
       'value': value,
     });
@@ -46,32 +46,32 @@ class TenjinSDK {
     return Future.value(result as bool);
   }
 
-  void registerAppForAdNetworkAttribution() =>
+  Future<void> registerAppForAdNetworkAttribution() =>
       _channel.invokeMethod('registerAppForAdNetworkAttribution');
 
-  void updatePostbackConversionValue(int conversionValue) {
-    _channel.invokeMethod('updatePostbackConversionValue', {
+  Future<void> updatePostbackConversionValue(int conversionValue) async {
+    await  _channel.invokeMethod('updatePostbackConversionValue', {
       'conversionValue': conversionValue,
     });
   }
 
-  void updatePostbackConversionValueCoarseValue(int conversionValue, String coarseValue) {
-    _channel.invokeMethod('updatePostbackConversionValueCoarseValue', {
+  Future<void> updatePostbackConversionValueCoarseValue(int conversionValue, String coarseValue) async {
+    await  _channel.invokeMethod('updatePostbackConversionValueCoarseValue', {
       'conversionValue': conversionValue,
       'coarseValue': coarseValue,
     });
   }
 
-  void updatePostbackConversionValueCoarseValueLockWindow(int conversionValue, String coarseValue, bool lockWindow) {
-    _channel.invokeMethod('updatePostbackConversionValueCoarseValueLockWindow', {
+  Future<void> updatePostbackConversionValueCoarseValueLockWindow(int conversionValue, String coarseValue, bool lockWindow) async {
+    await  _channel.invokeMethod('updatePostbackConversionValueCoarseValueLockWindow', {
       'conversionValue': conversionValue,
       'coarseValue': coarseValue,
       'lockWindow': lockWindow,
     });
   }
 
-  void transaction(String productName, String currencyCode, double quantity, double unitPrice) {
-    _channel.invokeMethod('transaction', {
+  Future<void> transaction(String productName, String currencyCode, double quantity, double unitPrice) async {
+    await _channel.invokeMethod('transaction', {
       'productName': productName,
       'currencyCode': currencyCode,
       'quantity': quantity,
@@ -79,7 +79,7 @@ class TenjinSDK {
     });
   }
 
-  void transactionWithReceipt({
+  Future<void> transactionWithReceipt({
     required String productId,
     required String currencyCode,
     required double unitPrice,
@@ -88,14 +88,14 @@ class TenjinSDK {
     String? androidDataSignature,
     String? iosReceipt,
     String? iosTransactionId,
-  }) {
+  }) async {
     bool isValidIOS =
         Platform.isIOS && iosReceipt != null && iosTransactionId != null;
     bool isValidAndroid = Platform.isAndroid &&
         androidPurchaseData != null &&
         androidDataSignature != null;
     if (isValidIOS || isValidAndroid) {
-      _channel.invokeMethod('transactionWithReceipt', {
+      await _channel.invokeMethod('transactionWithReceipt', {
         'productId': productId,
         'purchaseData': androidPurchaseData,
         'dataSignature': androidDataSignature,
@@ -110,7 +110,7 @@ class TenjinSDK {
     }
   }
 
-  void appendAppSubversion(int value) =>
+  Future<void> appendAppSubversion(int value) =>
       _channel.invokeMethod('appendAppSubversion', {'value': value});
 
   Future<Map<String, dynamic>?> getAttributionInfo() async {
@@ -132,8 +132,8 @@ class TenjinSDK {
     }
   }
 
-  void setCustomerUserId(String userId) {
-    _channel.invokeMethod('setCustomerUserId', {'userId': userId});
+  Future<void> setCustomerUserId(String userId) async {
+    await _channel.invokeMethod('setCustomerUserId', {'userId': userId});
   }
 
   Future<String?> getCustomerUserId() async {
@@ -146,8 +146,8 @@ class TenjinSDK {
     }
   }
 
-  void setCacheEventSetting(bool setting) {
-    _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
+  Future<void> setCacheEventSetting(bool setting) async {
+    await _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
   }
 
   Future<String?> getAnalyticsInstallationId() async {
@@ -160,38 +160,38 @@ class TenjinSDK {
     }
   }
 
-  void setGoogleDMAParameters(bool adPersonalization, bool adUserData) {
-    _channel.invokeMethod('setGoogleDMAParameters', {
+  Future<void> setGoogleDMAParameters(bool adPersonalization, bool adUserData) async {
+    await _channel.invokeMethod('setGoogleDMAParameters', {
       'adPersonalization': adPersonalization,
       'adUserData': adUserData,
     });
   }
 
-  void eventAdImpressionAdMob(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionAdMob', json);
+  Future<void> eventAdImpressionAdMob(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionAdMob', json);
   }
 
-  void eventAdImpressionAppLovin(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionAppLovin', json);
+  Future<void> eventAdImpressionAppLovin(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionAppLovin', json);
   }
 
-  void eventAdImpressionHyperBid(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionHyperBid', json);
+  Future<void> eventAdImpressionHyperBid(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionHyperBid', json);
   }
 
-  void eventAdImpressionIronSource(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionIronSource', json);
+  Future<void> eventAdImpressionIronSource(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionIronSource', json);
   }
   
-  void eventAdImpressionTopOn(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionTopOn', json);
+  Future<void> eventAdImpressionTopOn(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionTopOn', json);
   }
 
-  void eventAdImpressionTradPlus(Map<String, dynamic> json) {
-    _channel.invokeMethod('eventAdImpressionTradPlus', json);
+  Future<void> eventAdImpressionTradPlus(Map<String, dynamic> json) async {
+    await _channel.invokeMethod('eventAdImpressionTradPlus', json);
   }
 
-  void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
+  Future<void> eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) async {
     Map<String, dynamic> transformedJson = {};
     
     if (Platform.isIOS) {
@@ -217,6 +217,6 @@ class TenjinSDK {
       transformedJson['format'] = json['format'];
     }
     
-    _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
+    await _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
   }
 }
