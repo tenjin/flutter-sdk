@@ -264,11 +264,6 @@ TenjinSDK.instance.connect();
 
 ## Other methods available
 
-### Get attribution info
-```
-Map<String, dynamic>? attributionInfo = await TenjinSDK.instance.getAttributionInfo();  
-```
-
 ### Customer User ID
 ```
 TenjinSDK.setCustomerUserId(userId)
