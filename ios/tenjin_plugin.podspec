@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tenjin_plugin'
-  s.version          = '1.2.2'
+  s.version          = '1.2.3'
   s.summary          = 'Tenjin Flutter SDK'
   s.description      = <<-DESC
 A Flutter plugin to Tenjin SDK
@@ -28,5 +28,5 @@ A Flutter plugin to Tenjin SDK
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  s.dependency 'TenjinSDK', '1.14.5'
+  s.dependency 'TenjinSDK', '1.14.6'
 end
