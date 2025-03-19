@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+group 'com.tenjin_sdk'
+version '1.2.6'
+
 android {
     compileSdkVersion 33
     namespace 'com.tenjin_sdk'
