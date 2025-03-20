@@ -1,31 +1,14 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
 group 'com.tenjin_sdk'
-version '1.2.3'
-
-buildscript {
-    ext.kotlin_version = '1.7.20'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-rootProject.allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+version '1.2.6'
 
 android {
     compileSdkVersion 33
+    namespace 'com.tenjin_sdk'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -33,13 +16,12 @@ android {
     defaultConfig {
         minSdkVersion 21
     }
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
     implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation 'com.tenjin:android-sdk:1.16.6'
