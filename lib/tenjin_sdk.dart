@@ -150,6 +150,10 @@ class TenjinSDK {
     _channel.invokeMethod('setCacheEventSetting', {'setting': setting});
   }
 
+  void setEncryptRequestsSetting(bool setting) {
+    _channel.invokeMethod('setEncryptRequestsSetting', {'setting': setting});
+  }
+
   Future<String?> getAnalyticsInstallationId() async {
     try {
       final String? installationId = await _channel.invokeMethod('getAnalyticsInstallationId');

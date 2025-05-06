@@ -34,6 +34,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "setCustomerUserId": setCustomerUserId(call, result)
         case "getCustomerUserId": getCustomerUserId(call, result)
         case "setCacheEventSetting": setCacheEventSetting(call, result)
+        case "setEncryptRequestsSetting": setEncryptRequestsSetting(call, result)
         case "getAnalyticsInstallationId": getAnalyticsInstallationId(call, result)
         case "setGoogleDMAParameters": setGoogleDMAParameters(call, result)
         case "eventAdImpressionAdMob": eventAdImpressionAdMob(call, result)
@@ -223,6 +224,15 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
     private func setCacheEventSetting(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let setting = args["setting"] as? Bool {
             TenjinSDK.setCacheEventSetting(setting)
+            result(nil)
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'setting'", details: nil))
+        }
+    }
+
+    private func setEncryptRequestsSetting(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let args = call.arguments as? [String: Any], let setting = args["setting"] as? Bool {
+            TenjinSDK.setEncryptRequestsSetting(setting)
             result(nil)
         } else {
             result(FlutterError(code: "Error", message: "Invalid or missing 'setting'", details: nil))
