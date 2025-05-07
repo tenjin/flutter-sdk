@@ -47,8 +47,9 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "setCustomerUserId" -> setCustomerUserId(call, result)
           "getCustomerUserId" -> getCustomerUserId(call, result)
           "setCacheEventSetting" -> setCacheEventSetting(call, result)
+          "setEncryptRequestsSetting" -> setEncryptRequestsSetting(call, result)
           "getAnalyticsInstallationId" -> getAnalyticsInstallationId(call, result)
-        "setGoogleDMAParameters" -> setGoogleDMAParameters(call, result)
+          "setGoogleDMAParameters" -> setGoogleDMAParameters(call, result)
           "eventAdImpressionAdMob" -> eventAdImpressionAdMob(call.arguments as HashMap<String, Any>)
           "eventAdImpressionAppLovin" -> eventAdImpressionAppLovin(call.arguments as HashMap<String, Any>)
           "eventAdImpressionHyperBid" -> eventAdImpressionHyperBid(call.arguments as HashMap<String, Any>)
@@ -211,6 +212,16 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val setting = call.argument<Boolean>("setting")
     if (setting != null) {
       instance.setCacheEventSetting(setting)
+      result.success(null)
+    } else {
+      result.error("Error", "Invalid or missing 'setting'", null)
+    }
+  }
+
+  private fun setEncryptRequestsSetting(call: MethodCall, result: Result) {
+    val setting = call.argument<Boolean>("setting")
+    if (setting != null) {
+      instance.setEncryptRequestsSetting(setting)
       result.success(null)
     } else {
       result.error("Error", "Invalid or missing 'setting'", null)

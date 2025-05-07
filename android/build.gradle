@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.tenjin_sdk'
-version '1.2.6'
+version '1.2.7'
 
 android {
     compileSdkVersion 33
@@ -24,5 +24,5 @@ android {
 dependencies {
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
     implementation 'com.android.installreferrer:installreferrer:2.2'
-    implementation 'com.tenjin:android-sdk:1.16.6'
+    implementation 'com.tenjin:android-sdk:1.16.7'
 }
