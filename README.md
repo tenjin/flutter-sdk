@@ -194,7 +194,7 @@ TenjinSDK.instance.eventWithName("swipe_right");
 
 Passing custom events with integer values:
 
-To pass a custom event with an integer value: `eventWithNameAndValue(String name, String value)` or `eventWithNameAndValue(String name, int value)`.
+To pass a custom event with an integer value: `eventWithNameAndValue(String name, int value)`.
 
 Passing an integer `value` with an event's `name` allows marketers to sum up and track averages of the values passed for that metric in the Tenjin dashboard. If you plan to use DataVault, these values can be used to derive additional metrics that can be useful.
 
