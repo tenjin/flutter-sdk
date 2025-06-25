@@ -206,49 +206,11 @@ Using the example above, the Tenjin dashboard will sum and average the values fo
 
 Keep in mind that this event will not work if the value passed is not an integer.
 
+### LiveOps Campaigns
+Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
 
-### Deep Links
--------
-Tenjin supports the ability to direct users to a specific part of your app after a new attributed install via Tenjin's campaign tracking URLs. You can utilize the `getDeeplink` method and callback to access the deferred deeplink through the data object. To test you can follow the instructions found [here](https://help.tenjin.io/t/how-do-i-use-and-test-deferred-deeplinks-with-my-campaigns/547)
-
-```dart
-TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
-        bool isFirstSession, Map<String, String> data) {
-      if (isFirstSession) {
-        if (clickedTenjinLink) {
-          if (data.containsKey(TenjinSDK.DEEPLINK_URL)) {
-            // use the deferred_deeplink_url to direct the user to a specific part of your app
-          }
-        }
-      }
-    };
-```
-
-Below are the parameters, if available, that are returned in the deferred deeplink callback:
-
-| Parameter             | Description                                                      |
-|-----------------------|------------------------------------------------------------------|
-| advertising_id        | Advertising ID of the device                                     |
-| ad_network            | Ad network of the campaign                                       |
-| campaign_id           | Tenjin campaign ID                                               |
-| campaign_name         | Tenjin campaign name                                             |
-| site_id               | Site ID of source app                                            |
-| referrer              | The referrer params from the app store                           |
-| deferred_deeplink_url | The deferred deep-link of the campaign                           |
-| clickedTenjinLink     | Boolean representing if the device was tracked by Tenjin         |
-| isFirstSession        | Boolean representing if this is the first session for the device |
-
-You can also use the v1.7.1+ SDK for handling post-install logic by checking the `isFirstSession` param. For example, if you have a paid app, you can register your paid app install in the following way:
-
-```dart
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
-TenjinSDK.instance.setRewardCallback = (bool clickedTenjinLink,
-        bool isFirstSession, Map<String, String> data) {
-      if (isFirstSession) {
-          // send paid app price and revenue to Tenjin
-      }
-    };
-```
+> [!WARNING]
+> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
 
 ### App Subversion parameter for A/B Testing (requires DataVault)
 
@@ -280,36 +242,18 @@ You can get the analytics id which is generated randomly and saved in the local 
 String? analyticsId = await TenjinSDK.instance.getAnalyticsInstallationId();
 ```
 
-### Send AdMob impression (ILRD)
-```
-TenjinSDK.eventAdImpressionAdMob(json)
-```
+### Impression Level Revenue Data (ILRD)
+Tenjin supports the ability to integrate with the Impression Level Ad Revenue (ILRD) feature from,
 
-### Send AppLovin impression (ILRD)
-```
-TenjinSDK.eventAdImpressionAppLovin(json)
-```
+- AppLovin
+- Unity LevelPlay
+- AdMob
+- TopOn
+- Clever Ads Solutions (CAS)
+- TradPlus
 
-### Send HyperBid impression (ILRD)
-```
-TenjinSDK.eventAdImpressionHyperBid(json)
-```
-
-### Send IronSource impression (ILRD)
-```
-TenjinSDK.eventAdImpressionIronSource(json)
-```
-
-### Send TopOn impression (ILRD)
-```
-TenjinSDK.eventAdImpressionTopOn(json)
-```
-
-### Send TradPlus impression (ILRD)
-```
-TenjinSDK.eventAdImpressionTradPlus(json)
-TenjinSDK.eventAdImpressionTradPlusAdInfo(adInfo)
-```
+> [!WARNING]
+> ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
 
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com
