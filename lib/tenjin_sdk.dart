@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'util/version_helper.dart';
 
 class TenjinSDK {
   TenjinSDK._();
@@ -10,7 +11,10 @@ class TenjinSDK {
   final MethodChannel _channel = const MethodChannel('tenjin_plugin');
 
   void init({required String apiKey}) async {
-    _channel.invokeMethod('init', {'apiKey': apiKey});
+    _channel.invokeMethod('init', {
+      'apiKey': apiKey,
+      'pluginVersion': VersionHelper.getVersion(),
+    });
   }
 
   void connect() => _channel.invokeMethod('connect');
@@ -197,7 +201,7 @@ class TenjinSDK {
 
   void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
     Map<String, dynamic> transformedJson = {};
-    
+
     if (Platform.isIOS) {
       transformedJson['revenue'] = json['ecpm'];
       transformedJson['ad_unit_id'] = json['adunit_id'];
@@ -220,7 +224,48 @@ class TenjinSDK {
       transformedJson['country'] = json['isoCode'];
       transformedJson['format'] = json['format'];
     }
-    
+
     _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
+  }
+
+  void subscription({
+    required String productId,
+    required String currencyCode,
+    required double unitPrice,
+    String? iosTransactionId,
+    String? iosOriginalTransactionId,
+    String? iosReceipt,
+    String? iosSKTransaction,
+    String? androidPurchaseToken,
+    String? androidPurchaseData,
+    String? androidDataSignature,
+  }) {
+    bool isValidIOS = Platform.isIOS &&
+        iosTransactionId != null &&
+        iosOriginalTransactionId != null &&
+        iosReceipt != null &&
+        iosSKTransaction != null;
+
+    bool isValidAndroid = Platform.isAndroid &&
+        androidPurchaseToken != null &&
+        androidPurchaseData != null &&
+        androidDataSignature != null;
+
+    if (isValidIOS || isValidAndroid) {
+      _channel.invokeMethod('subscription', {
+        'productId': productId,
+        'currencyCode': currencyCode,
+        'unitPrice': unitPrice,
+        'iosTransactionId': iosTransactionId,
+        'iosOriginalTransactionId': iosOriginalTransactionId,
+        'iosReceipt': iosReceipt,
+        'iosSKTransaction': iosSKTransaction,
+        'androidPurchaseToken': androidPurchaseToken,
+        'androidPurchaseData': androidPurchaseData,
+        'androidDataSignature': androidDataSignature,
+      });
+    } else {
+      print('TenjinSDK.instance subscription is missing required platform-specific data');
+    }
   }
 }

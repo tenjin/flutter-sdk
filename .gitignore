@@ -1,4 +1,5 @@
 .DS_Store
+.idea/
 .dart_tool/
 
 .packages
@@ -7,3 +8,4 @@
 build/
 
 example/pubspec.lock
+example/ios/Podfile.lock

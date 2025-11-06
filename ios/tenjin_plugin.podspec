@@ -28,5 +28,7 @@ A Flutter plugin to Tenjin SDK
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  s.dependency 'TenjinSDK', '1.14.9'
+  # TODO: BETA ONLY - After beta, uncomment the line below and remove vendored_frameworks line and Frameworks folder
+  # s.dependency 'TenjinSDK', '1.14.9'
+  s.vendored_frameworks = 'Frameworks/TenjinSDK.xcframework'
 end

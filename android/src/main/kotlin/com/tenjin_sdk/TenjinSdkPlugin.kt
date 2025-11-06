@@ -38,6 +38,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "connect" -> connect(call, result)
           "transaction" -> transaction(call, result)
           "transactionWithReceipt" -> transactionWithReceipt(call, result)
+          "subscription" -> subscription(call, result)
           "eventWithName" -> eventWithName(call, result)
           "eventWithNameAndValue" -> eventWithNameAndValue(call, result)
           "appendAppSubversion" -> appendAppSubversion(call, result)
@@ -67,6 +68,11 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   fun init(call: MethodCall, result: Result){
     val args = call.arguments as Map<*, *>
     val apiKey = args["apiKey"] as String
+    val pluginVersion = args["pluginVersion"] as? String ?: "unknown"
+
+    // Set plugin version before getting instance
+    TenjinSDK.setPluginVersion("flutter", pluginVersion)
+
     instance = TenjinSDK.getInstance(context, apiKey)
     result.success(null)
   }
@@ -150,6 +156,24 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val unitPrice = args["unitPrice"] as Double
     val quantity = args["quantity"] as Integer
     instance.transaction(productId, currencyCode, quantity.toInt(), unitPrice, purchaseData, dataSignature)
+    result.success(null)
+  }
+
+  fun subscription(call: MethodCall, result: Result) {
+    val args = call.arguments as Map<*, *>
+    val productId = args["productId"] as? String
+    val currencyCode = args["currencyCode"] as? String
+    val unitPrice = args["unitPrice"] as? Double
+    val purchaseToken = args["androidPurchaseToken"] as? String
+    val purchaseData = args["androidPurchaseData"] as? String
+    val dataSignature = args["androidDataSignature"] as? String
+
+    if (productId == null || currencyCode == null || unitPrice == null || purchaseToken == null || purchaseData == null || dataSignature == null) {
+      result.error("Error", "Invalid or missing subscription parameters", null)
+      return
+    }
+
+    instance.subscription(productId, currencyCode, unitPrice, purchaseToken, purchaseData, dataSignature)
     result.success(null)
   }
 
