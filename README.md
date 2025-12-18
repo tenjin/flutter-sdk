@@ -59,11 +59,13 @@ Manifest requirements:
 
 ### Initialization
 
-Get your `API_KEY` from your [Tenjin Organization tab.](https://tenjin.io/dashboard/organizations)
+Get your `SDK_KEY` from your [Tenjin Organization tab.](https://tenjin.io/dashboard/organizations)
 You can initialize Tenjin with the function
 ```dart
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
+TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
 ```
+
+**Note:** The `init(apiKey:)` method is deprecated. Use `initialize(sdkKey:)` instead.
 
 You can verify if the integration is working through our [Live Test Device Data Tool](https://www.tenjin.io/dashboard/sdk_diagnostics). Add your `advertising_id` or `IDFA/GAID` to the list of test devices. You can find this under Support -> [Test Devices](https://www.tenjin.io/dashboard/debug_app_users).  Go to the [SDK Live page](https://www.tenjin.io/dashboard/sdk_diagnostics) and send a test events from your app.  You should see a live event come in:
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
@@ -75,7 +77,7 @@ You can verify if the integration is working through our [Live Test Device Data 
 As part of GDPR compliance, with Tenjin's SDK you can opt-in, opt-out devices/users, or select which specific device-related params to opt-in or opt-out.  `OptOut()` will not send any API requests to Tenjin and we will not process any events.
 
 ```dart
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
+TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
 
 bool userOptIn = checkOptInValue();
 
@@ -93,7 +95,7 @@ To opt-in/opt-out specific device-related parameters, you can use the `OptInPara
 If you want to only get specific device-related parameters, use `OptInParams()`. In example below, we will only these device-related parameters: `ip_address`, `advertising_id`, `developer_device_id`, `limit_ad_tracking`, `referrer`, and `iad`:
 
 ```dart
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
+TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
 
 List<String> optInParams = {"ip_address", "advertising_id", "developer_device_id", "limit_ad_tracking", "referrer", "iad"};
 TenjinSDK.instance.optInParams(optInParams);
@@ -105,7 +107,7 @@ If you want to send ALL parameters except specfic device-related parameters, use
 
 
 ```dart
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
+TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
 
 List<String> optOutParams = {"locale", "timezone", "build_id"};
 TenjinSDK.instance.optOutParams(optOutParams);
@@ -218,8 +220,8 @@ If you are running A/B tests and want to report the differences, we can append a
 
 This data will appear within DataVault where you will be able to run reports using the app subversion values.
 
-```
-TenjinSDK.instance.init(apiKey: '<API-KEY>');
+```dart
+TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
 TenjinSDK.instance.appendAppSubversion(8888);
 TenjinSDK.instance.connect();
 ```
@@ -240,6 +242,63 @@ You can get the analytics id which is generated randomly and saved in the local 
 
 ```dart
 String? analyticsId = await TenjinSDK.instance.getAnalyticsInstallationId();
+```
+
+### User Profile - LiveOps Metrics
+
+The Tenjin SDK automatically tracks user engagement metrics to help you understand player behavior and lifetime value. These metrics are collected automatically and can be accessed programmatically.
+
+#### Automatic Tracking
+
+The SDK automatically tracks:
+- **Session metrics**: Session count, duration, first/last session dates
+- **In-App Purchases (IAP)**: Transaction count, revenue by currency, purchased product IDs
+- **Ad Revenue (ILRD)**: Impression-level revenue from supported ad networks
+
+#### Retrieving User Profile Data
+
+Get the user profile as a dictionary with all metrics:
+
+```dart
+Map<String, dynamic>? profile = await TenjinSDK.instance.getUserProfileDictionary();
+
+if (profile != null) {
+  int sessionCount = profile['session_count'];
+  int totalTime = profile['total_session_time'];
+  int avgLength = profile['average_session_length'];
+  int iapCount = profile['iap_transaction_count'];
+  double adRevenue = profile['total_ilrd_revenue_usd'];
+}
+```
+
+**Dictionary Keys (Always Present):**
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `session_count` | `int` | Total sessions |
+| `total_session_time` | `int` | Total time (milliseconds) |
+| `average_session_length` | `int` | Average session (milliseconds) |
+| `last_session_length` | `int` | Last session (milliseconds) |
+| `iap_transaction_count` | `int` | Total IAP count |
+| `total_ilrd_revenue_usd` | `double` | Total ad revenue USD |
+
+**Dictionary Keys (Conditional - only if available):**
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `first_session_date` | `String` | ISO8601 formatted date |
+| `last_session_date` | `String` | ISO8601 formatted date |
+| `current_session_length` | `int` | Active session duration (milliseconds) |
+| `iap_revenue_by_currency` | `Map` | Map of currency → revenue |
+| `purchased_product_ids` | `List` | Sorted array of product IDs |
+| `ilrd_revenue_by_network` | `Map` | Map of network → revenue |
+
+#### Reset Profile
+
+Clear all user profile data (useful for testing or user logout):
+
+```dart
+TenjinSDK.instance.resetUserProfile();
 ```
 
 ### Impression Level Revenue Data (ILRD)

@@ -56,6 +56,8 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "eventAdImpressionIronSource" -> eventAdImpressionIronSource(call.arguments as HashMap<String, Any>)
           "eventAdImpressionTopOn" -> eventAdImpressionTopOn(call.arguments as HashMap<String, Any>)
           "eventAdImpressionTradPlus" -> eventAdImpressionTradPlus(call.arguments as HashMap<String, Any>)
+          "getUserProfileDictionary" -> getUserProfileDictionary(call, result)
+          "resetUserProfile" -> resetUserProfile(call, result)
           else -> result.notImplemented()
       }
   }
@@ -283,5 +285,19 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     } catch (e: Exception) {
       e.printStackTrace()
     }
+  }
+
+  private fun getUserProfileDictionary(call: MethodCall, result: Result) {
+    val profileDict = instance.getUserProfileDictionary()
+    if (profileDict != null) {
+      result.success(profileDict)
+    } else {
+      result.error("Error", "Failed to get user profile", null)
+    }
+  }
+
+  private fun resetUserProfile(call: MethodCall, result: Result) {
+    instance.resetUserProfile()
+    result.success(null)
   }
 }
