@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    TenjinSDK.instance.init(apiKey: '<API-KEY>');
+    TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
     TenjinSDK.instance.optIn();
     TenjinSDK.instance.registerAppForAdNetworkAttribution();
     super.initState();
@@ -98,6 +98,31 @@ class _MyAppState extends State<MyApp> {
                   }
                 },
                 child: Text('Get user id'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  try {
+                    Map<String, dynamic>? profile = await TenjinSDK.instance.getUserProfileDictionary();
+                    if (profile != null) {
+                      print('===> User Profile Data:');
+                      profile.forEach((key, value) {
+                        print('===> $key: $value');
+                      });
+                    } else {
+                      print('===> User Profile is empty or not available yet');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
+                },
+                child: Text('Get User Profile'),
+              ),
+              TextButton(
+                onPressed: () {
+                  TenjinSDK.instance.resetUserProfile();
+                  print('===> User Profile has been reset');
+                },
+                child: Text('Reset User Profile'),
               ),
             ],
           ),
