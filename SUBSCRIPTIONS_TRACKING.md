@@ -151,8 +151,3 @@ void setupRevenueCatListener() {
   });
 }
 ```
-
----
-
-## Best Practices
-
