@@ -51,6 +51,8 @@ Manifest requirements:
   ...
   <uses-permission android:name="android.permission.INTERNET"></uses-permission>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+  <!-- Required to retrieve the GAID for Android 13 (API level 33) and above -->
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
   ...
 </manifest>
 ```
