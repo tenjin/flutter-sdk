@@ -113,9 +113,27 @@ InAppPurchase.instance.purchaseStream.listen((purchases) async {
 
 ---
 
-## Using RevenueCat
+## Helper Methods (iOS only)
 
-If you're already using RevenueCat for paywalls, track purchases using the listener:
+### `subscriptionWithStoreKit`
+
+Fetches the latest StoreKit 2 transaction for a product and sends it to Tenjin in a single native call. No SK2 data needs to be extracted in Dart. This is the recommended approach when your IAP library (e.g., RevenueCat, Adapty, Qonversion) doesn't expose SK2 transaction data.
+
+```dart
+await TenjinSDK.instance.subscriptionWithStoreKit(
+  productId: 'com.example.monthly',
+  currencyCode: 'USD',
+  unitPrice: 9.99,
+);
+```
+
+> **Note:** Requires iOS 15.0+ (StoreKit 2). This method is iOS-only and will no-op on Android.
+
+---
+
+## Using RevenueCat (purchases_flutter)
+
+RevenueCat does not expose SK2 transaction data at the Dart level. Use `subscriptionWithStoreKit()` to handle everything natively — it fetches the SK2 transaction directly from StoreKit 2 and sends it to Tenjin in a single call.
 
 ```dart
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -141,7 +159,8 @@ void setupRevenueCatListener() {
       final product = (products?.isNotEmpty ?? false) ? products!.first : null;
 
       if (product != null) {
-        TenjinSDK.instance.subscription(
+        // Fetches SK2 transaction and sends to Tenjin natively
+        await TenjinSDK.instance.subscriptionWithStoreKit(
           productId: product.identifier,
           currencyCode: product.currencyCode,
           unitPrice: product.price,

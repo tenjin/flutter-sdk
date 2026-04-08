@@ -200,6 +200,16 @@ TenjinSDK.instance.subscription(
 );
 ```
 
+For IAP libraries that don't expose SK2 transaction data (e.g., RevenueCat), use `subscriptionWithStoreKit()` on iOS — it fetches the SK2 data natively:
+
+```dart
+await TenjinSDK.instance.subscriptionWithStoreKit(
+  productId: 'com.example.monthly',
+  currencyCode: 'USD',
+  unitPrice: 9.99,
+);
+```
+
 ### Custom Event
 
 NOTE: **DO NOT SEND CUSTOM EVENTS BEFORE THE INITIALIZATION** `connect()` event (above). The initialization event must come before any custom events are sent.
