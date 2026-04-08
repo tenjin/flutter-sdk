@@ -6,7 +6,7 @@ Track subscription purchases with Tenjin for server-side verification and attrib
 
 ```yaml
 dependencies:
-  tenjin_plugin: '1.3.0-beta.1'
+  tenjin_plugin: '1.3.1'
 ```
 
 Use `TenjinSDK.instance.subscription()` to track subscription purchases on **iOS** and **Android** and send purchase data to Tenjin for server-side verification and attribution.
