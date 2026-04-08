@@ -9,7 +9,9 @@ dependencies:
   tenjin_plugin: '1.3.1'
 ```
 
-Use `TenjinSDK.instance.subscription()` to track subscription purchases on **iOS** and **Android** and send purchase data to Tenjin for server-side verification and attribution.
+Use `TenjinSDK.instance.subscription()` to track subscription purchases on **iOS** and send purchase data to Tenjin for server-side verification and attribution.
+
+> **Note:** Subscription tracking is currently only available on iOS. Android support is coming soon.
 
 
 ### Method
@@ -24,16 +26,12 @@ TenjinSDK.instance.subscription(
   iosOriginalTransactionId: String?,
   iosReceipt: String?,
   iosSKTransaction: String?,
-  // Android parameters
-  androidPurchaseToken: String?,
-  androidPurchaseData: String?,
-  androidDataSignature: String?,
 );
 ```
 
 ---
 
-## Using `in_app_purchase` (Direct Integration)
+## Using `in_app_purchase` (Direct Integration, iOS only)
 
 ### iOS (StoreKit 2)
 
@@ -77,39 +75,6 @@ InAppPurchase.instance.purchaseStream.listen((purchases) async {
 });
 ```
 
-### Android (Google Play Billing)
-
-```dart
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
-import 'package:tenjin_plugin/tenjin_sdk.dart';
-
-InAppPurchase.instance.purchaseStream.listen((purchases) async {
-  for (final purchase in purchases) {
-    if (purchase.status == PurchaseStatus.purchased &&
-        purchase is GooglePlayPurchaseDetails) {
-
-      final billing = purchase.billingClientPurchase;
-
-      // Get product details
-      final response = await InAppPurchase.instance
-          .queryProductDetails({billing.products.first});
-      final product = response.productDetails.first;
-
-      TenjinSDK.instance.subscription(
-        productId: billing.products.first,
-        currencyCode: product.currencyCode,
-        unitPrice: product.rawPrice,
-        androidPurchaseToken: billing.purchaseToken,
-        androidPurchaseData: billing.originalJson,
-        androidDataSignature: billing.signature,
-      );
-
-      await InAppPurchase.instance.completePurchase(purchase);
-    }
-  }
-});
-```
 
 ---
 

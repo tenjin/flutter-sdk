@@ -73,8 +73,8 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
     val apiKey = args["apiKey"] as String
     val pluginVersion = args["pluginVersion"] as? String ?: "unknown"
 
-    // Set plugin version before getting instance
-    TenjinSDK.setPluginVersion("flutter", pluginVersion)
+    // TODO: uncomment when setPluginVersion is available in the Android SDK
+    // TenjinSDK.setPluginVersion("flutter", pluginVersion)
 
     instance = TenjinSDK.getInstance(context, apiKey)
     result.success(null)
@@ -163,20 +163,21 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   fun subscription(call: MethodCall, result: Result) {
-    val args = call.arguments as Map<*, *>
-    val productId = args["productId"] as? String
-    val currencyCode = args["currencyCode"] as? String
-    val unitPrice = args["unitPrice"] as? Double
-    val purchaseToken = args["androidPurchaseToken"] as? String
-    val purchaseData = args["androidPurchaseData"] as? String
-    val dataSignature = args["androidDataSignature"] as? String
-
-    if (productId == null || currencyCode == null || unitPrice == null || purchaseToken == null || purchaseData == null || dataSignature == null) {
-      result.error("Error", "Invalid or missing subscription parameters", null)
-      return
-    }
-
-    instance.subscription(productId, currencyCode, unitPrice, purchaseToken, purchaseData, dataSignature)
+    // TODO: uncomment when subscription is available in the Android SDK
+    // val args = call.arguments as Map<*, *>
+    // val productId = args["productId"] as? String
+    // val currencyCode = args["currencyCode"] as? String
+    // val unitPrice = args["unitPrice"] as? Double
+    // val purchaseToken = args["androidPurchaseToken"] as? String
+    // val purchaseData = args["androidPurchaseData"] as? String
+    // val dataSignature = args["androidDataSignature"] as? String
+    //
+    // if (productId == null || currencyCode == null || unitPrice == null || purchaseToken == null || purchaseData == null || dataSignature == null) {
+    //   result.error("Error", "Invalid or missing subscription parameters", null)
+    //   return
+    // }
+    //
+    // instance.subscription(productId, currencyCode, unitPrice, purchaseToken, purchaseData, dataSignature)
     result.success(null)
   }
 

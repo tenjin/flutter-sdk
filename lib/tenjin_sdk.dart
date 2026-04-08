@@ -233,6 +233,7 @@ class TenjinSDK {
     _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
   }
 
+  /// Track a subscription with full transaction data (iOS only for now).
   void subscription({
     required String productId,
     required String currencyCode,
@@ -245,32 +246,27 @@ class TenjinSDK {
     String? androidPurchaseData,
     String? androidDataSignature,
   }) {
-    bool isValidIOS = Platform.isIOS &&
-        iosTransactionId != null &&
-        iosOriginalTransactionId != null &&
-        iosReceipt != null &&
-        iosSKTransaction != null;
+    if (Platform.isIOS) {
+      bool isValid = iosTransactionId != null &&
+          iosOriginalTransactionId != null &&
+          iosReceipt != null &&
+          iosSKTransaction != null;
 
-    bool isValidAndroid = Platform.isAndroid &&
-        androidPurchaseToken != null &&
-        androidPurchaseData != null &&
-        androidDataSignature != null;
-
-    if (isValidIOS || isValidAndroid) {
-      _channel.invokeMethod('subscription', {
-        'productId': productId,
-        'currencyCode': currencyCode,
-        'unitPrice': unitPrice,
-        'iosTransactionId': iosTransactionId,
-        'iosOriginalTransactionId': iosOriginalTransactionId,
-        'iosReceipt': iosReceipt,
-        'iosSKTransaction': iosSKTransaction,
-        'androidPurchaseToken': androidPurchaseToken,
-        'androidPurchaseData': androidPurchaseData,
-        'androidDataSignature': androidDataSignature,
-      });
+      if (isValid) {
+        _channel.invokeMethod('subscription', {
+          'productId': productId,
+          'currencyCode': currencyCode,
+          'unitPrice': unitPrice,
+          'iosTransactionId': iosTransactionId,
+          'iosOriginalTransactionId': iosOriginalTransactionId,
+          'iosReceipt': iosReceipt,
+          'iosSKTransaction': iosSKTransaction,
+        });
+      } else {
+        print('TenjinSDK.instance subscription is missing required iOS parameters');
+      }
     } else {
-      print('TenjinSDK.instance subscription is missing required platform-specific data');
+      print('TenjinSDK.instance subscription is currently only available on iOS');
     }
   }
 
