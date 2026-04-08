@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tenjin_plugin'
-  s.version          = '1.2.8'
+  s.version          = '1.3.0'
   s.summary          = 'Tenjin Flutter SDK'
   s.description      = <<-DESC
 A Flutter plugin to Tenjin SDK
@@ -28,7 +28,5 @@ A Flutter plugin to Tenjin SDK
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  # TODO: BETA ONLY - After beta, uncomment the line below and remove vendored_frameworks line and Frameworks folder
-  # s.dependency 'TenjinSDK', '1.14.9'
-  s.vendored_frameworks = 'Frameworks/TenjinSDK.xcframework'
+  s.dependency 'TenjinSDK', '1.16.0'
 end
