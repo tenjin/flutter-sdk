@@ -39,6 +39,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "transaction" -> transaction(call, result)
           "transactionWithReceipt" -> transactionWithReceipt(call, result)
           "subscription" -> subscription(call, result)
+          "subscriptionWithStoreKit" -> result.error("Error", "subscriptionWithStoreKit is only available on iOS", null)
           "eventWithName" -> eventWithName(call, result)
           "eventWithNameAndValue" -> eventWithNameAndValue(call, result)
           "appendAppSubversion" -> appendAppSubversion(call, result)

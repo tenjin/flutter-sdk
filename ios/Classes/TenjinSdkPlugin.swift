@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import AppTrackingTransparency
+import StoreKit
 
 public class TenjinSdkPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -23,6 +24,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "transaction": transaction(call, result)
         case "transactionWithReceipt": transactionWithReceipt(call, result)
         case "subscription": subscription(call, result)
+        case "subscriptionWithStoreKit": subscriptionWithStoreKit(call, result)
         case "eventWithName": eventWithName(call, result)
         case "eventWithNameAndValue": eventWithNameAndValue(call, result)
         case "appendAppSubversion": appendAppSubversion(call, result)
@@ -158,6 +160,54 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         result(nil)
     }
     
+    private func subscriptionWithStoreKit(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        guard let args = call.arguments as? [String: Any],
+              let productId = args["productId"] as? String,
+              let currencyCode = args["currencyCode"] as? String,
+              let unitPrice = args["unitPrice"] as? NSNumber else {
+            result(FlutterError(code: "Error", message: "Invalid or missing subscription parameters", details: nil))
+            return
+        }
+
+        let unitPriceDecimal = NSDecimalNumber(decimal: unitPrice.decimalValue)
+
+        if #available(iOS 15.0, *) {
+            Task {
+                guard let verificationResult = await Transaction.latest(for: productId) else {
+                    result(FlutterError(code: "Error", message: "No transaction found for product: \(productId)", details: nil))
+                    return
+                }
+
+                let transaction: Transaction
+                switch verificationResult {
+                case .verified(let tx):
+                    transaction = tx
+                case .unverified(let tx, _):
+                    transaction = tx
+                }
+
+                let transactionId = String(transaction.id)
+                let originalTransactionId = String(transaction.originalID)
+                let jsonRepresentation = String(data: transaction.jsonRepresentation, encoding: .utf8) ?? ""
+                let jws = verificationResult.jwsRepresentation
+
+                TenjinSDK.subscription(
+                    withProductName: productId,
+                    andCurrencyCode: currencyCode,
+                    andUnitPrice: unitPriceDecimal,
+                    andTransactionId: transactionId,
+                    andOriginalTransactionId: originalTransactionId,
+                    andBase64Receipt: jws,
+                    andSKTransaction: jsonRepresentation
+                )
+
+                result(nil)
+            }
+        } else {
+            result(FlutterError(code: "Error", message: "StoreKit 2 requires iOS 15.0 or later", details: nil))
+        }
+    }
+
     private func eventWithName(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let name = args["name"] as? String {
             TenjinSDK.sendEvent(withName: name)

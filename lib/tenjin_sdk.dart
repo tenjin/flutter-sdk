@@ -273,7 +273,25 @@ class TenjinSDK {
       print('TenjinSDK.instance subscription is missing required platform-specific data');
     }
   }
-  
+
+  /// Track a subscription by fetching SK2 transaction data natively (iOS only).
+  /// Recommended for RevenueCat and other IAP libraries that don't expose SK2 data.
+  Future<void> subscriptionWithStoreKit({
+    required String productId,
+    required String currencyCode,
+    required double unitPrice,
+  }) async {
+    if (!Platform.isIOS) {
+      print('subscriptionWithStoreKit is only available on iOS');
+      return;
+    }
+    await _channel.invokeMethod('subscriptionWithStoreKit', {
+      'productId': productId,
+      'currencyCode': currencyCode,
+      'unitPrice': unitPrice,
+    });
+  }
+
   Future<Map<String, dynamic>?> getUserProfileDictionary() async {
     try {
       final dynamic response = await _channel.invokeMethod('getUserProfileDictionary');
