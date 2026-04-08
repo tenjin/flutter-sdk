@@ -180,6 +180,33 @@ TenjinSDK.instance.transaction(
 You can verify if the IAP validation is working through our [Live Test Device Data Tool](https://www.tenjin.io/dashboard/sdk_diagnostics).  You should see a live event come in:
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
+### Subscription Tracking (iOS only)
+Track subscription purchases for server-side verification and attribution. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `in_app_purchase` and RevenueCat.
+
+> **Note:** Subscription tracking is currently only available on iOS. Android support is coming soon.
+
+```dart
+TenjinSDK.instance.subscription(
+  productId: 'com.example.monthly',
+  currencyCode: 'USD',
+  unitPrice: 9.99,
+  iosTransactionId: '...',
+  iosOriginalTransactionId: '...',
+  iosReceipt: '...',
+  iosSKTransaction: '...',
+);
+```
+
+For IAP libraries that don't expose SK2 transaction data (e.g., RevenueCat), use `subscriptionWithStoreKit()` — it fetches the SK2 data natively:
+
+```dart
+await TenjinSDK.instance.subscriptionWithStoreKit(
+  productId: 'com.example.monthly',
+  currencyCode: 'USD',
+  unitPrice: 9.99,
+);
+```
+
 ### Custom Event
 
 NOTE: **DO NOT SEND CUSTOM EVENTS BEFORE THE INITIALIZATION** `connect()` event (above). The initialization event must come before any custom events are sent.

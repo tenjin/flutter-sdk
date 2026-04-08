@@ -60,3 +60,8 @@ All notable changes to this project will be documented in this file.
 
 * Tenjin iOS SDK version 1.15.0
 * Tenjin Android SDK version 1.17.0
+
+## [1.3.1] - 2026-04-08
+
+* Tenjin iOS SDK version 1.16.0
+* Tenjin Android SDK version 1.17.3

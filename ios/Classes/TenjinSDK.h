@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 
+@class TenjinPurchasesManager;
 @class TJNUserProfileData;
 
 @interface TenjinSDK : NSObject
@@ -82,6 +83,9 @@ andDeferredDeeplink:(NSURL *)url
 //returns the shared Tenjin SDK instance
 + (TenjinSDK *)sharedInstance;
 
+//returns the shared Purchases Manager instance
++ (TenjinPurchasesManager *)purchasesManager;
+
 #pragma mark - Functionality
 
 //use connect to send connect call. sharedInstanceWithToken automatically does a connect
@@ -135,6 +139,15 @@ andDeferredDeeplink:(NSURL *)url
 
 //notify Tenjin of a new subscription purchase
 - (void)handleSubscriptionPurchase:(SKPaymentTransaction *)transaction;
+
+//track subscription with manual parameters (useful for plugins like Flutter, Unity, etc.)
++ (void)subscriptionWithProductName:(NSString *)productName
+                   andCurrencyCode:(NSString *)currencyCode
+                      andUnitPrice:(NSDecimalNumber *)price
+                  andTransactionId:(NSString *)transactionId
+         andOriginalTransactionId:(NSString *)originalTransactionId
+                  andBase64Receipt:(NSString *)receipt
+                 andSKTransaction:(NSString *)skTransaction;
 
 // GDPR opt-out
 + (void)optOut;
@@ -212,6 +225,8 @@ andDeferredDeeplink:(NSURL *)url
 + (NSString *)sdkVersion;
 
 + (void)setWrapperVersion:(NSString *)wrapperVersion;
+
++ (void)setPluginVersion:(NSString *)plugin version:(NSString *)version;
 
 + (void)setValue:(NSString *)value
           forKey:(NSString *)key;

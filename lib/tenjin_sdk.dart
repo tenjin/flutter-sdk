@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'util/version_helper.dart';
 
 class TenjinSDK {
   TenjinSDK._();
@@ -11,7 +12,10 @@ class TenjinSDK {
 
   @Deprecated('Use initialize with sdkKey parameter instead')
   void init({required String apiKey}) async {
-    _channel.invokeMethod('init', {'apiKey': apiKey});
+    _channel.invokeMethod('init', {
+      'apiKey': apiKey,
+      'pluginVersion': VersionHelper.getVersion(),
+    });
   }
 
   void initialize({required String sdkKey}) async {
@@ -202,7 +206,7 @@ class TenjinSDK {
 
   void eventAdImpressionTradPlusAdInfo(Map<String, dynamic> json) {
     Map<String, dynamic> transformedJson = {};
-    
+
     if (Platform.isIOS) {
       transformedJson['revenue'] = json['ecpm'];
       transformedJson['ad_unit_id'] = json['adunit_id'];
@@ -225,8 +229,63 @@ class TenjinSDK {
       transformedJson['country'] = json['isoCode'];
       transformedJson['format'] = json['format'];
     }
-    
+
     _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
+  }
+
+  /// Track a subscription with full transaction data (iOS only for now).
+  void subscription({
+    required String productId,
+    required String currencyCode,
+    required double unitPrice,
+    String? iosTransactionId,
+    String? iosOriginalTransactionId,
+    String? iosReceipt,
+    String? iosSKTransaction,
+    String? androidPurchaseToken,
+    String? androidPurchaseData,
+    String? androidDataSignature,
+  }) {
+    if (Platform.isIOS) {
+      bool isValid = iosTransactionId != null &&
+          iosOriginalTransactionId != null &&
+          iosReceipt != null &&
+          iosSKTransaction != null;
+
+      if (isValid) {
+        _channel.invokeMethod('subscription', {
+          'productId': productId,
+          'currencyCode': currencyCode,
+          'unitPrice': unitPrice,
+          'iosTransactionId': iosTransactionId,
+          'iosOriginalTransactionId': iosOriginalTransactionId,
+          'iosReceipt': iosReceipt,
+          'iosSKTransaction': iosSKTransaction,
+        });
+      } else {
+        print('TenjinSDK.instance subscription is missing required iOS parameters');
+      }
+    } else {
+      print('TenjinSDK.instance subscription is currently only available on iOS');
+    }
+  }
+
+  /// Track a subscription by fetching SK2 transaction data natively (iOS only).
+  /// Recommended for RevenueCat and other IAP libraries that don't expose SK2 data.
+  Future<void> subscriptionWithStoreKit({
+    required String productId,
+    required String currencyCode,
+    required double unitPrice,
+  }) async {
+    if (!Platform.isIOS) {
+      print('subscriptionWithStoreKit is only available on iOS');
+      return;
+    }
+    await _channel.invokeMethod('subscriptionWithStoreKit', {
+      'productId': productId,
+      'currencyCode': currencyCode,
+      'unitPrice': unitPrice,
+    });
   }
 
   Future<Map<String, dynamic>?> getUserProfileDictionary() async {

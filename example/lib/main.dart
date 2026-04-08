@@ -100,6 +100,31 @@ class _MyAppState extends State<MyApp> {
                 child: Text('Get user id'),
               ),
               TextButton(
+                onPressed: () {
+                  // Sample subscription data (iOS only for now)
+                  TenjinSDK.instance.subscription(
+                    productId: 'com.example.premium_monthly',
+                    currencyCode: 'USD',
+                    unitPrice: 9.99,
+                    iosTransactionId: '2000000123456789',
+                    iosOriginalTransactionId: '2000000123456789',
+                    iosReceipt: 'dGVzdF9yZWNlaXB0X2RhdGE=',
+                    iosSKTransaction: '''
+                      {
+                        "id": 2000000123456789,
+                        "originalID": 2000000123456789,
+                        "productID": "com.example.premium_monthly",
+                        "type": "Auto-Renewable Subscription",
+                        "purchaseDate": "2024-11-05T10:30:00Z",
+                        "originalPurchaseDate": "2024-11-05T10:30:00Z",
+                        "expirationDate": "2024-12-05T10:30:00Z"
+                      }''',
+                  );
+                  print('✅ Sent subscription with SK2 transaction data');
+                },
+                child: Text('Test Subscription (Dummy Data)'),
+              ),
+              TextButton(
                 onPressed: () async {
                   try {
                     Map<String, dynamic>? profile = await TenjinSDK.instance.getUserProfileDictionary();
