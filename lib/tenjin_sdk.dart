@@ -10,11 +10,16 @@ class TenjinSDK {
 
   final MethodChannel _channel = const MethodChannel('tenjin_plugin');
 
+  @Deprecated('Use initialize with sdkKey parameter instead')
   void init({required String apiKey}) async {
     _channel.invokeMethod('init', {
       'apiKey': apiKey,
       'pluginVersion': VersionHelper.getVersion(),
     });
+  }
+
+  void initialize({required String sdkKey}) async {
+    _channel.invokeMethod('init', {'apiKey': sdkKey});
   }
 
   void connect() => _channel.invokeMethod('connect');
@@ -267,5 +272,28 @@ class TenjinSDK {
     } else {
       print('TenjinSDK.instance subscription is missing required platform-specific data');
     }
+  }
+  
+  Future<Map<String, dynamic>?> getUserProfileDictionary() async {
+    try {
+      final dynamic response = await _channel.invokeMethod('getUserProfileDictionary');
+      if (response is Map) {
+        final Map<String, dynamic> stringKeyedMap = response.map((key, value) {
+          return MapEntry(key.toString(), value);
+        });
+        return stringKeyedMap;
+      }
+      throw Exception("Received invalid type for user profile.");
+    } on PlatformException catch (e) {
+      print("Failed to get user profile: '${e.message}'.");
+      return null;
+    } catch (e) {
+      print("An error occurred: $e");
+      return null;
+    }
+  }
+
+  void resetUserProfile() {
+    _channel.invokeMethod('resetUserProfile');
   }
 }

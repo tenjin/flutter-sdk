@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'tenjin_plugin'
-  s.version          = '1.3.0'
+  s.version          = '1.3.1'
   s.summary          = 'Tenjin Flutter SDK'
   s.description      = <<-DESC
 A Flutter plugin to Tenjin SDK

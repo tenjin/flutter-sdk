@@ -44,6 +44,8 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "eventAdImpressionIronSource": eventAdImpressionIronSource(call, result)
         case "eventAdImpressionTopOn": eventAdImpressionTopOn(call, result)
         case "eventAdImpressionTradPlus": eventAdImpressionTradPlus(call, result)
+        case "getUserProfileDictionary": getUserProfileDictionary(call, result)
+        case "resetUserProfile": resetUserProfile(call, result)
         default: result(FlutterMethodNotImplemented)
         }
     }
@@ -372,6 +374,16 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         }
     }
     
+    private func getUserProfileDictionary(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        let profileDict = TenjinSDK.getUserProfileAsDictionary()
+        result(profileDict)
+    }
+
+    private func resetUserProfile(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        TenjinSDK.resetUserProfile()
+        result(nil)
+    }
+
     private func convertToJsonString(from dictionary: [String: Any]) throws -> String {
         let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
         guard let jsonString = String(data: jsonData, encoding: .utf8) else {
