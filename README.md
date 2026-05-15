@@ -6,6 +6,16 @@
 
 The Tenjin Flutter Plugin allows users to track events and installs in their iOS/Android apps. To learn more about Tenjin and our product offering, please visit https://www.tenjin.com.
 
+## Integrate with an AI assistant (LLM)
+
+You can integrate the Tenjin Flutter SDK with the help of an AI assistant (Claude, Cursor, GitHub Copilot, etc.). Paste the following prompt into your assistant of choice:
+
+```
+Add Tenjin SDK to my project using: https://raw.githubusercontent.com/tenjin/sdk-llm-guides/main/guides/flutter/llm-guide.md
+```
+
+The guide walks the assistant through the complete integration. For more details, see the [Tenjin SDK Guides for LLMs](https://github.com/tenjin/sdk-llm-guides).
+
 ## Plugin Integration
 
 1. Add the dependency to the `pubspec.yaml` file in your project:
@@ -240,9 +250,6 @@ Keep in mind that this event will not work if the value passed is not an integer
 ### LiveOps Campaigns
 Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
 
-> [!WARNING]
-> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
-
 ### App Subversion parameter for A/B Testing (requires DataVault)
 
 If you are running A/B tests and want to report the differences, we can append a numeric value to your app version using the `appendAppSubversion` method.  For example, if your app version `1.0.1`, and set `appendAppSubversion: @8888`, it will report as `1.0.1.8888`.
@@ -339,9 +346,6 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - TopOn
 - Clever Ads Solutions (CAS)
 - TradPlus
-
-> [!WARNING]
-> ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
 
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com
