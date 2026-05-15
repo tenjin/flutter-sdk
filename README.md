@@ -38,13 +38,8 @@ On iOS:
 For AppTrackingTransparency, be sure to update your project `.plist` file and add `NSUserTrackingUsageDescription` along with the text message you want to display to users. This library is only available in iOS 14.0+. For further information on this, you can check our [iOS documentation](https://github.com/tenjin/tenjin-ios-sdk#-skadnetwork-and-ios-15-advertiser-postbacks)
   
 On Android:
-You will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html) to your gradle dependencies. If you haven’t already installed the [Google Play Services](https://developers.google.com/android/guides/setup) you also need to add it
-```gradle
-dependencies {
-  classpath("com.android.installreferrer:installreferrer:1.1.2")
-  classpath("com.google.android.gms:play-services-analytics:17.0.0")
-}
-```
+The plugin already bundles the required Google Play Services libraries — [Install Referrer](https://developer.android.com/google/play/installreferrer/library.html), [Advertising ID](https://developers.google.com/android/reference/com/google/android/gms/ads/identifier/AdvertisingIdClient), and [App Set ID](https://developer.android.com/training/articles/app-set-id) — as transitive dependencies, so you do not need to add them to your app's `build.gradle`.
+
 Manifest requirements:
 ```xml
 <manifest>
