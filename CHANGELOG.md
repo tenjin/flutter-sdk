@@ -70,3 +70,10 @@ All notable changes to this project will be documented in this file.
 
 * Tenjin iOS SDK version 1.17.0
 * Tenjin Android SDK version 1.18.0
+
+## [1.4.0] - 2026-06-12
+
+* Tenjin iOS SDK version 1.17.1
+* Tenjin Android SDK version 1.20.0
+* Add subscription tracking support on Android
+* Report the plugin version to Tenjin (`plugin` / `plugin_version`)

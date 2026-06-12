@@ -19,7 +19,10 @@ class TenjinSDK {
   }
 
   void initialize({required String sdkKey}) async {
-    _channel.invokeMethod('init', {'apiKey': sdkKey});
+    _channel.invokeMethod('init', {
+      'apiKey': sdkKey,
+      'pluginVersion': VersionHelper.getVersion(),
+    });
   }
 
   void connect() => _channel.invokeMethod('connect');
@@ -233,7 +236,7 @@ class TenjinSDK {
     _channel.invokeMethod('eventAdImpressionTradPlus', transformedJson);
   }
 
-  /// Track a subscription with full transaction data (iOS only for now).
+  /// Track a subscription with full transaction data (iOS and Android).
   void subscription({
     required String productId,
     required String currencyCode,
@@ -265,8 +268,23 @@ class TenjinSDK {
       } else {
         print('TenjinSDK.instance subscription is missing required iOS parameters');
       }
-    } else {
-      print('TenjinSDK.instance subscription is currently only available on iOS');
+    } else if (Platform.isAndroid) {
+      bool isValid = androidPurchaseToken != null &&
+          androidPurchaseData != null &&
+          androidDataSignature != null;
+
+      if (isValid) {
+        _channel.invokeMethod('subscription', {
+          'productId': productId,
+          'currencyCode': currencyCode,
+          'unitPrice': unitPrice,
+          'androidPurchaseToken': androidPurchaseToken,
+          'androidPurchaseData': androidPurchaseData,
+          'androidDataSignature': androidDataSignature,
+        });
+      } else {
+        print('TenjinSDK.instance subscription is missing required Android parameters');
+      }
     }
   }
 
