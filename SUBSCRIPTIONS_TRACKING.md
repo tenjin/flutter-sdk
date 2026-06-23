@@ -6,15 +6,17 @@ Track subscription purchases with Tenjin for server-side verification and attrib
 
 ```yaml
 dependencies:
-  tenjin_plugin: '1.3.1'
+  tenjin_plugin: '1.4.0'
 ```
 
-Use `TenjinSDK.instance.subscription()` to track subscription purchases on **iOS** and send purchase data to Tenjin for server-side verification and attribution.
+Use `TenjinSDK.instance.subscription()` to track subscription purchases on **iOS** and **Android** and send purchase data to Tenjin for server-side verification and attribution.
 
-> **Note:** Subscription tracking is currently only available on iOS. Android support is coming soon.
+> **Note:** Android subscription tracking requires `tenjin_plugin` 1.4.0+ (bundles Tenjin Android SDK 1.20.0+).
 
 
 ### Method
+
+Pass the iOS parameters on iOS and the Android parameters on Android (leave the others as `null`).
 
 ```dart
 TenjinSDK.instance.subscription(
@@ -26,12 +28,20 @@ TenjinSDK.instance.subscription(
   iosOriginalTransactionId: String?,
   iosReceipt: String?,
   iosSKTransaction: String?,
+  // Android parameters
+  androidPurchaseToken: String?,      // Google Play purchase token
+  androidPurchaseData: String?,       // original JSON from the purchase object
+  androidDataSignature: String?,      // signature for purchase verification
 );
 ```
 
+> **Android note:** Tenjin derives the purchase date from the `purchaseTime` field inside `androidPurchaseData`. On Android, `productId`, `currencyCode`, `androidPurchaseToken`, `androidPurchaseData`, and `androidDataSignature` are all required.
+
 ---
 
-## Using `in_app_purchase` (Direct Integration, iOS only)
+## Using `in_app_purchase` (Direct Integration)
+
+A single `purchaseStream` listener can handle both platforms — branch on the concrete `PurchaseDetails` type (`AppStorePurchaseDetails` for iOS, `GooglePlayPurchaseDetails` for Android).
 
 ### iOS (StoreKit 2)
 
@@ -67,6 +77,43 @@ InAppPurchase.instance.purchaseStream.listen((purchases) async {
         iosOriginalTransactionId: tx.originalId.toString(),
         iosReceipt: receipt,
         iosSKTransaction: tx.jsonRepresentation,
+      );
+
+      await InAppPurchase.instance.completePurchase(purchase);
+    }
+  }
+});
+```
+
+### Android (Google Play Billing)
+
+The `GooglePlayPurchaseDetails.billingClientPurchase` wrapper exposes the `purchaseToken`, `originalJson`, and `signature` that Tenjin needs.
+
+```dart
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
+import 'package:tenjin_plugin/tenjin_sdk.dart';
+
+InAppPurchase.instance.purchaseStream.listen((purchases) async {
+  for (final purchase in purchases) {
+    if (purchase.status == PurchaseStatus.purchased &&
+        purchase is GooglePlayPurchaseDetails) {
+
+      final PurchaseWrapper p = purchase.billingClientPurchase;
+
+      // Get product details for price/currency
+      final response = await InAppPurchase.instance
+          .queryProductDetails({p.products.first});
+      final product = response.productDetails.first;
+
+      TenjinSDK.instance.subscription(
+        productId: p.products.first,
+        currencyCode: product.currencyCode,
+        unitPrice: product.rawPrice,
+        androidPurchaseToken: p.purchaseToken,
+        androidPurchaseData: p.originalJson,
+        androidDataSignature: p.signature,
       );
 
       await InAppPurchase.instance.completePurchase(purchase);
