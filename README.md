@@ -66,10 +66,18 @@ Manifest requirements:
 
 ### Initialization
 
-Get your `SDK_KEY` from your [Tenjin Organization tab.](https://tenjin.io/dashboard/organizations)
-You can initialize Tenjin with the function
+Get your `SDK_KEY` from your app's page in the [Tenjin dashboard.](https://dashboard.tenjin.com/dashboard/apps/)
+
+**Note:** The `SDK_KEY` is unique per app. Each Tenjin app corresponds to a single platform, so an app published to both Android and iOS has two separate apps in Tenjin — and therefore two different `SDK_KEY` values. When your Flutter codebase targets both platforms, select the correct key at runtime:
+
 ```dart
-TenjinSDK.instance.initialize(sdkKey: '<SDK-KEY>');
+import 'dart:io' show Platform;
+
+final sdkKey = Platform.isAndroid
+    ? '<ANDROID-SDK-KEY>'
+    : '<IOS-SDK-KEY>';
+
+TenjinSDK.instance.initialize(sdkKey: sdkKey);
 ```
 
 **Note:** The `init(apiKey:)` method is deprecated. Use `initialize(sdkKey:)` instead.
