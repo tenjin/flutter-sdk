@@ -15,7 +15,7 @@ A Flutter plugin to Tenjin SDK
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '10.0'
+  s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
@@ -28,5 +28,5 @@ A Flutter plugin to Tenjin SDK
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  s.dependency 'TenjinSDK', '1.17.1'
+  s.dependency 'TenjinSDK', '1.19.0'
 end

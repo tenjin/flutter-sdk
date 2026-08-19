@@ -144,6 +144,10 @@ class TenjinSDK {
     }
   }
 
+  void handleOpenUrl(String url) {
+    _channel.invokeMethod('handleOpenUrl', {'url': url});
+  }
+
   void setCustomerUserId(String userId) {
     _channel.invokeMethod('setCustomerUserId', {'userId': userId});
   }

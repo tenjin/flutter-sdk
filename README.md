@@ -6,6 +6,33 @@
 
 The Tenjin Flutter Plugin allows users to track events and installs in their iOS/Android apps. To learn more about Tenjin and our product offering, please visit https://www.tenjin.com.
 
+# Table of contents
+
+- [Integrate with an AI assistant (LLM)](#integrate-with-an-ai-assistant-llm)
+- [Plugin Integration](#plugin-integration)
+  - [Android ProGuard Settings:](#android-proguard-settings)
+  - [Notes:](#notes)
+- [Usage](#usage)
+  - [Initialization](#initialization)
+- [GDPR compliance](#gdpr-compliance)
+  - [SetGoogleDMAParameters](#setgoogledmaparameters)
+  - [Purchase Event](#purchase-event)
+  - [Subscription Tracking](#subscription-tracking)
+  - [Custom Event](#custom-event)
+  - [LiveOps Campaigns](#liveops-campaigns)
+  - [App Subversion parameter for A/B Testing (requires DataVault)](#app-subversion-parameter-for-ab-testing-requires-datavault)
+- [Other methods available](#other-methods-available)
+  - [Re-engagement Deeplinks](#re-engagement-deeplinks)
+  - [Customer User ID](#customer-user-id)
+  - [GetAnalyticsInstallationId](#getanalyticsinstallationid)
+  - [Retry/cache events and IAP](#retrycache-events-and-iap)
+  - [User Profile - LiveOps Metrics](#user-profile---liveops-metrics)
+    - [Automatic Tracking](#automatic-tracking)
+    - [Retrieving User Profile Data](#retrieving-user-profile-data)
+    - [Reset Profile](#reset-profile)
+  - [Impression Level Revenue Data (ILRD)](#impression-level-revenue-data-ilrd)
+- [Support](#support)
+
 ## Integrate with an AI assistant (LLM)
 
 You can integrate the Tenjin Flutter SDK with the help of an AI assistant (Claude, Cursor, GitHub Copilot, etc.). Paste the following prompt into your assistant of choice:
@@ -269,6 +296,20 @@ TenjinSDK.instance.connect();
 ```
 
 ## Other methods available
+
+### Re-engagement Deeplinks
+Report the deeplink your app was opened with, so re-engagement clicks can be attributed to the ad network. Forward both the launch link and links received while the app is running (example uses [app_links](https://pub.dev/packages/app_links)):
+
+```dart
+final appLinks = AppLinks();
+
+final initial = await appLinks.getInitialLink();
+if (initial != null) TenjinSDK.instance.handleOpenUrl(initial.toString());
+
+appLinks.uriLinkStream.listen((uri) => TenjinSDK.instance.handleOpenUrl(uri.toString()));
+```
+
+On iOS this is safe to call before `initialize`. On Android, opens that start or recreate your activity are captured automatically, so this is only needed for links delivered to an already-running activity.
 
 ### Customer User ID
 ```
