@@ -82,7 +82,7 @@ TenjinSDK.instance.initialize(sdkKey: sdkKey);
 
 **Note:** The `init(apiKey:)` method is deprecated. Use `initialize(sdkKey:)` instead.
 
-You can verify if the integration is working through our [Live Test Device Data Tool](https://www.tenjin.io/dashboard/sdk_diagnostics). Add your `advertising_id` or `IDFA/GAID` to the list of test devices. You can find this under Support -> [Test Devices](https://www.tenjin.io/dashboard/debug_app_users).  Go to the [SDK Live page](https://www.tenjin.io/dashboard/sdk_diagnostics) and send a test events from your app.  You should see a live event come in:
+You can verify if the integration is working through our [Live Test Device Data Tool](https://www.tenjin.com/dashboard/sdk_diagnostics). Add your `advertising_id` or `IDFA/GAID` to the list of test devices. You can find this under Support -> [Test Devices](https://www.tenjin.com/dashboard/debug_app_users).  Go to the [SDK Live page](https://www.tenjin.com/dashboard/sdk_diagnostics) and send a test events from your app.  You should see a live event come in:
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
 
@@ -190,7 +190,7 @@ TenjinSDK.instance.transaction(
 );
 ```
 
-You can verify if the IAP validation is working through our [Live Test Device Data Tool](https://www.tenjin.io/dashboard/sdk_diagnostics).  You should see a live event come in:
+You can verify if the IAP validation is working through our [Live Test Device Data Tool](https://www.tenjin.com/dashboard/sdk_diagnostics).  You should see a live event come in:
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
 ### Subscription Tracking
