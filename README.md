@@ -194,7 +194,7 @@ You can verify if the IAP validation is working through our [Live Test Device Da
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
 ### Subscription Tracking
-Track subscription purchases for server-side verification and attribution on **iOS** and **Android**. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `in_app_purchase` and RevenueCat.
+Track subscription purchases for server-side verification and attribution on **iOS** and **Android**. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `in_app_purchase`.
 
 ```dart
 TenjinSDK.instance.subscription(
