@@ -1,6 +1,6 @@
 //
 // Created by Tenjin on 2016-05-20.
-//  Version 1.15.0
+//  Version 1.19.0
 
 //  Copyright (c) 2016 Tenjin. All rights reserved.
 //
@@ -83,7 +83,7 @@ andDeferredDeeplink:(NSURL *)url
 //returns the shared Tenjin SDK instance
 + (TenjinSDK *)sharedInstance;
 
-//returns the shared Purchases Manager instance
+//returns the shared Purchases Manager instance for StoreKit 2 on-demand tracking
 + (TenjinPurchasesManager *)purchasesManager;
 
 #pragma mark - Functionality
@@ -93,6 +93,17 @@ andDeferredDeeplink:(NSURL *)url
 
 //use connect to send connect call. sharedInstanceWithToken automatically does a connect
 + (void)connectWithDeferredDeeplink:(NSURL *)url;
+
+//report the deeplink URL the app was opened with for re-engagement attribution.
+//call from application:openURL:options: and continueUserActivity:, or the UISceneDelegate
+//equivalents (scene:openURLContexts:, scene:continueUserActivity: and, for cold starts,
+//connectionOptions in scene:willConnectToSession:options:). AppDelegate-only apps also get
+//cold launches captured automatically; scene-based apps must forward all cases.
++ (void)handleOpenURL:(NSURL *)url NS_SWIFT_NAME(handleOpenURL(_:));
+
+//raw-string variant of handleOpenURL for plugin wrappers (Unity, Flutter, React Native).
+//safe to call before initialization - the URL is cached and sent with the first connect
++ (void)handleOpenURLString:(NSString *)urlString NS_SWIFT_NAME(handleOpenURLString(_:));
 
 //use sendEventWithName for custom event names
 + (void)sendEventWithName:(NSString *)eventName;
@@ -148,6 +159,12 @@ andDeferredDeeplink:(NSURL *)url
          andOriginalTransactionId:(NSString *)originalTransactionId
                   andBase64Receipt:(NSString *)receipt
                  andSKTransaction:(NSString *)skTransaction;
+
+//track subscription by fetching the latest SK2 transaction natively
+//recommended for IAP libraries that don't expose SK2 data (e.g., RevenueCat)
++ (void)subscriptionWithStoreKitForProductId:(NSString *)productId
+                            andCurrencyCode:(NSString *)currencyCode
+                               andUnitPrice:(NSDecimalNumber *)price API_AVAILABLE(ios(16.0));
 
 // GDPR opt-out
 + (void)optOut;
@@ -242,7 +259,6 @@ andDeferredDeeplink:(NSURL *)url
 
 @end
 
-
 //
 // Created by Tenjin
 // Copyright (c) 2022 Tenjin. All rights reserved.
@@ -255,6 +271,7 @@ andDeferredDeeplink:(NSURL *)url
 + (void)topOnImpressionFromDict:(NSDictionary *)adImpression;
 + (void)topOnImpressionFromJSON:(NSString *)jsonString;
 @end
+
 //
 // Created by Tenjin
 // Copyright (c) 2022 Tenjin. All rights reserved.
@@ -267,6 +284,7 @@ andDeferredDeeplink:(NSURL *)url
 + (void)subscribeAppLovinImpressions;
 + (void)appLovinImpressionFromJSON:(NSString *)jsonString;
 @end
+
 //
 // Created by Tenjin
 // Copyright (c) 2022 Tenjin. All rights reserved.
@@ -279,6 +297,7 @@ andDeferredDeeplink:(NSURL *)url
 + (void)hyperBidImpressionFromDict:(NSDictionary *)adImpression;
 + (void)hyperBidImpressionFromJSON:(NSString *)jsonString;
 @end
+
 //
 // Created by Tenjin
 // Copyright (c) 2022 Tenjin. All rights reserved.
@@ -293,6 +312,7 @@ andDeferredDeeplink:(NSURL *)url
 + (void)handleAdMobILRD:(NSObject *)adView :(GADAdValue *)adValue;
 + (void)adMobImpressionFromJSON:(NSString *)jsonString;
 @end
+
 //
 // Created by Tenjin
 // Copyright (c) 2022 Tenjin. All rights reserved.
@@ -332,4 +352,31 @@ andDeferredDeeplink:(NSURL *)url
 + (void)subscribeTradPlusImpressions;
 + (void)tradPlusImpressionFromJSON:(NSString *)jsonString;
 + (void)handleTradPlusILRD:(NSDictionary *)adInfo;
+@end
+
+//
+// Created by Tenjin
+// Copyright (c) 2025 Tenjin. All rights reserved.
+//
+
+#import "TenjinSDK.h"
+#import <Foundation/Foundation.h>
+
+@interface TenjinSDK (CloudXILRD)
++ (void)handleCloudXILRD:(id)adImpression;
++ (void)cloudXImpressionFromJSON:(NSString *)jsonString;
+@end
+
+//
+// Created by Tenjin
+// Copyright (c) 2026 Tenjin. All rights reserved.
+//
+
+#import "TenjinSDK.h"
+#import <Foundation/Foundation.h>
+
+@interface TenjinSDK (CustomILRD)
+
++ (void)customImpressionFromJSON:(NSString *)jsonString;
+
 @end

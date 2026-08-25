@@ -34,6 +34,7 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         case "updatePostbackConversionValueCoarseValue": updatePostbackConversionValueCoarseValue(call, result)
         case "updatePostbackConversionValueCoarseValueLockWindow": updatePostbackConversionValueCoarseValueLockWindow(call, result)
         case "getAttributionInfo": getAttributionInfo(call, result)
+        case "handleOpenUrl": handleOpenUrl(call, result)
         case "setCustomerUserId": setCustomerUserId(call, result)
         case "getCustomerUserId": getCustomerUserId(call, result)
         case "setCacheEventSetting": setCacheEventSetting(call, result)
@@ -288,6 +289,15 @@ public class TenjinSdkPlugin: NSObject, FlutterPlugin {
         }
     }
     
+    private func handleOpenUrl(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        if let args = call.arguments as? [String: Any], let url = args["url"] as? String {
+            TenjinSDK.handleOpenURLString(url)
+            result(nil)
+        } else {
+            result(FlutterError(code: "Error", message: "Invalid or missing 'url'", details: nil))
+        }
+    }
+
     private func setCustomerUserId(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
         if let args = call.arguments as? [String: Any], let userId = args["userId"] as? String {
             TenjinSDK.setCustomerUserId(userId)

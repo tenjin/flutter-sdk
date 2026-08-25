@@ -46,6 +46,7 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
           "requestTrackingAuthorization" -> result.success(true)
           "registerAppForAdNetworkAttribution" -> result.success(null)
           "getAttributionInfo" -> getAttributionInfo(call, result)
+          "handleOpenUrl" -> handleOpenUrl(call, result)
           "setCustomerUserId" -> setCustomerUserId(call, result)
           "getCustomerUserId" -> getCustomerUserId(call, result)
           "setCacheEventSetting" -> setCacheEventSetting(call, result)
@@ -221,6 +222,20 @@ class TenjinSdkPlugin: FlutterPlugin, MethodCallHandler {
         }
       }
     }
+  }
+
+  private fun handleOpenUrl(call: MethodCall, result: Result) {
+    val url = call.argument<String>("url")
+    if (url == null) {
+      result.error("Error", "Invalid or missing 'url'", null)
+      return
+    }
+    if (!::instance.isInitialized) {
+      result.success(null)
+      return
+    }
+    instance.handleOpenUrl(url)
+    result.success(null)
   }
 
   private fun setCustomerUserId(call: MethodCall, result: Result) {
