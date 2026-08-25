@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/tenjin/flutter-sdk/compare/1.4.0...1.5.0) (2026-08-25)
+
+
+### Features
+
+* Add handleOpenUrl for re-engagement deeplinks [TENJIN-28220] ([#52](https://github.com/tenjin/flutter-sdk/issues/52)) ([f05baa6](https://github.com/tenjin/flutter-sdk/commit/f05baa6ae77ef5da24f225b269d4e987ef84a296))
+
 ## [1.0.0] - 2023-06-07
 
 * Tenjin iOS SDK version 1.12.24
