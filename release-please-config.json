@@ -4,7 +4,10 @@
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
-      "package-name": "tenjin_plugin"
+      "package-name": "tenjin_plugin",
+      "extra-files": [
+        "lib/util/version_helper.dart"
+      ]
     }
   },
   "include-v-in-tag": false,
