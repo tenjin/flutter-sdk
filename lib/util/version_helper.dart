@@ -4,7 +4,7 @@
 /// do not edit it by hand.
 class VersionHelper {
   // x-release-please-start-version
-  static const String version = '1.5.0';
+  static const String version = '1.6.0';
   // x-release-please-end
 
   VersionHelper._();

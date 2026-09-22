@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/tenjin/flutter-sdk/compare/1.5.0...1.6.0) (2026-09-22)
+
+
+### Features
+
+* update Android SDK to 1.24.0 and iOS SDK to 1.19.1 ([#56](https://github.com/tenjin/flutter-sdk/issues/56)) ([61d1a6d](https://github.com/tenjin/flutter-sdk/commit/61d1a6d14f47e241d382859fe86758a99c59bd03))
+
 ## [1.5.0](https://github.com/tenjin/flutter-sdk/compare/1.4.0...1.5.0) (2026-08-25)
 
 
