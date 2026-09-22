@@ -7,7 +7,7 @@ group 'com.tenjin_sdk'
 version '1.3.2'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     namespace 'com.tenjin_sdk'
 
     sourceSets {
