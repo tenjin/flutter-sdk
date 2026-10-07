@@ -14,6 +14,7 @@ The Tenjin Flutter Plugin allows users to track events and installs in their iOS
   - [Notes:](#notes)
 - [Usage](#usage)
   - [Initialization](#initialization)
+  - [Google Ads On-Device Conversion Measurement (ICM / ODM)](#google-ads-on-device-conversion-measurement-icm--odm)
 - [GDPR compliance](#gdpr-compliance)
   - [SetGoogleDMAParameters](#setgoogledmaparameters)
   - [Purchase Event](#purchase-event)
@@ -113,6 +114,35 @@ You can verify if the integration is working through our [Live Test Device Data 
 ![](https://s3.amazonaws.com/tenjin-instructions/sdk_live_purchase_events.png)
 
 
+
+### Google Ads On-Device Conversion Measurement (ICM / ODM)
+
+> [!NOTE]
+> iOS only. Only needed if you run Google Ads campaigns for your iOS app.
+
+The Tenjin iOS SDK collects Google's on-device conversion data automatically when Google's `GoogleAdsOnDeviceConversion` SDK is in your app. There is no Dart method to call.
+
+1. In `ios/Podfile`, inside the `target 'Runner' do` block, add the pod, then run `cd ios && pod install`:
+
+    ```ruby
+    pod 'GoogleAdsOnDeviceConversion'
+    ```
+
+    If your app uses `firebase_analytics`, it already includes `GoogleAdsOnDeviceConversion` (check `ios/Podfile.lock`): don't add it again.
+
+2. Google's SDK needs a moment after Tenjin is initialized to produce its data. On iOS, call the first `connect()` at least 3 seconds after `initialize`:
+
+    ```dart
+    TenjinSDK.instance.initialize(sdkKey: sdkKey);
+
+    if (Platform.isIOS) {
+      await Future.delayed(const Duration(seconds: 3));
+    }
+
+    TenjinSDK.instance.connect();
+    ```
+
+    If you call `connect()` after the ATT prompt, make sure that call also happens at least 3 seconds after initialization. Later `connect()` calls need no delay.
 
 ## GDPR compliance
 
