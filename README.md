@@ -10,6 +10,7 @@ The Tenjin Flutter Plugin allows users to track events and installs in their iOS
 
 - [Integrate with an AI assistant (LLM)](#integrate-with-an-ai-assistant-llm)
 - [Plugin Integration](#plugin-integration)
+  - [iOS: Swift Package Manager](#ios-swift-package-manager)
   - [Android ProGuard Settings:](#android-proguard-settings)
   - [Notes:](#notes)
 - [Usage](#usage)
@@ -58,6 +59,12 @@ dependencies:
 ```
 $ flutter pub get
 ```
+
+### iOS: Swift Package Manager
+
+On iOS, the plugin supports both Swift Package Manager (SPM) and CocoaPods. Flutter picks the right one for your project, so there is nothing to configure.
+
+Using SPM requires Flutter 3.44 or later, the first version where SPM is on by default. On older Flutter versions the plugin installs through CocoaPods, which is the default there. If you turned SPM on manually with an older Flutter, either upgrade Flutter or turn SPM off with `flutter config --no-enable-swift-package-manager`.
 
 ### Android ProGuard Settings:
 ```java
@@ -122,13 +129,17 @@ You can verify if the integration is working through our [Live Test Device Data 
 
 The Tenjin iOS SDK collects Google's on-device conversion data automatically when Google's `GoogleAdsOnDeviceConversion` SDK is in your app. There is no Dart method to call.
 
-1. In `ios/Podfile`, inside the `target 'Runner' do` block, add the pod, then run `cd ios && pod install`:
+1. Add Google's `GoogleAdsOnDeviceConversion` SDK to your iOS app:
 
-    ```ruby
-    pod 'GoogleAdsOnDeviceConversion'
-    ```
+    - **CocoaPods:** in `ios/Podfile`, inside the `target 'Runner' do` block, add the pod, then run `cd ios && pod install`:
 
-    If your app uses `firebase_analytics`, it already includes `GoogleAdsOnDeviceConversion` (check `ios/Podfile.lock`): don't add it again.
+        ```ruby
+        pod 'GoogleAdsOnDeviceConversion'
+        ```
+
+    - **Swift Package Manager:** open `ios/Runner.xcworkspace` in Xcode, choose **File > Add Package Dependencies…**, enter `https://github.com/googleads/google-ads-on-device-conversion-ios-sdk`, and add the `GoogleAdsOnDeviceConversion` library to the `Runner` target.
+
+    If your app uses `firebase_analytics`, it already includes `GoogleAdsOnDeviceConversion` (check `ios/Podfile.lock`, or **Package Dependencies** in Xcode with SPM): don't add it again.
 
 2. Google's SDK needs a moment after Tenjin is initialized to produce its data. On iOS, call the first `connect()` at least 3 seconds after `initialize`:
 
