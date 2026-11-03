@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.7.0](https://github.com/tenjin/flutter-sdk/compare/1.6.0...1.7.0) (2026-11-03)
+
+
+### Features
+
+* add Swift Package Manager support for iOS [TENJIN-30461] ([#60](https://github.com/tenjin/flutter-sdk/issues/60)) ([4aaeca6](https://github.com/tenjin/flutter-sdk/commit/4aaeca6cfcb38d9f863112ae1ecef9c3c8feb378))
+
 ## [1.6.0](https://github.com/tenjin/flutter-sdk/compare/1.5.0...1.6.0) (2026-09-22)
 
 
