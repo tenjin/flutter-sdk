@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 import AppTrackingTransparency
 import StoreKit
+import TenjinSDK
 
 public class TenjinSdkPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
