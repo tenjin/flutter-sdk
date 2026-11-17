@@ -445,5 +445,13 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - Clever Ads Solutions (CAS)
 - TradPlus
 
+## Pull request validation
+
+The PR Validation workflow runs `flutter pub get` and `flutter test` from the repository root on every pull request, including documentation and release changes. It uses the stable Flutter channel, like the publish workflow.
+
+For Release Please PRs created with `GITHUB_TOKEN`, GitHub may require a maintainer to select **Approve workflows to run** in the PR merge box. Approve and wait for **Flutter tests** to pass before merging; the workflow does not publish a release.
+
+The tests cover native-response conversion and error handling in the Dart plugin using a test method channel. They do not compile the Android or iOS SDKs, exercise a device, or run the example application's widget test. Run the same two commands locally before requesting review. Publishing remains in the separate Release Please workflow.
+
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com
