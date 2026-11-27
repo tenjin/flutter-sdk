@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
         // Keep in sync with the TenjinSDK version in tenjin_plugin.podspec
-        .package(url: "https://github.com/tenjin/tenjin-ios-sdk.git", exact: "1.19.1")
+        .package(url: "https://github.com/tenjin/tenjin-ios-sdk.git", exact: "1.21.0")
     ],
     targets: [
         .target(
